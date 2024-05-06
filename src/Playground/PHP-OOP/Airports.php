@@ -12,6 +12,7 @@
  * @package  Page Templates
  * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
  * @author   Ralf Hahn, <ralf.hahn@h-da.de>
+ * @author   Bogdan Polskiy, <bogdan.polskiy@stud.h-da.de>
  * @version  3.1
  */
 
@@ -102,6 +103,8 @@ class Airport extends Page
         $data = $this->getViewData(); 
         $this->generatePageHeader('Airports'); 
         
+        echo "<h1> AIRPORTS </h1>";
+
         $i = 1;
         foreach ($data as $airport => $country) {
             $airport = htmlspecialchars($airport);
