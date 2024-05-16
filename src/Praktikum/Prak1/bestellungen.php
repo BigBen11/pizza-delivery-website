@@ -1,7 +1,9 @@
+<?php
+$html = <<<HTML
 <!DOCTYPE html>
 <html lang="de">  
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Bestellseite</title>
 </head>
 <body>
@@ -16,12 +18,11 @@
             </ul>
         </nav>
     </header>
-    
     <section id="bestellung">
         <h2>Bestellung aufgeben</h2>
         <form action="https://echo.fbi.h-da.de/" method="post">
             <label for="pizza">Pizza wählen:</label>
-            <select id="pizza" name="pizza">
+            <select id="pizza" name="pizza[]" multiple>
                 <option value="salami">Salami-Pizza</option>
                 <option value="margherita">Margherita</option>
                 <option value="vegetariana">Vegetariana</option>
@@ -30,18 +31,16 @@
                 <img id='salami' src='Pizza.jpeg' alt='Salami Pizza Bild' style='display:block; width:100px; height:100px;'>
                 <p>Salami-Pizza - 4.50 €</p>
             </div>
-
             <div class="pizza-option">
                 <img id='margherita' src='Pizza.jpeg' alt='Margherita Pizza Bild' style='display:block; width:100px; height:100px;'>
                 <p>Margherita - 4.00 €</p>
             </div>
-
             <div class="pizza-option">
                 <img id='hawaii' src='Pizza.jpeg' alt='Hawaii Pizza Bild' style='display:block; width:100px; height:100px;'>
                 <p>Hawaii - 5.50 €</p>
             </div>
             <br>
-            <label for="size">Größe wählen:</label>
+            <label>Größe wählen:</label>
             <input type="radio" id="small" name="size" value="small">
             <label for="small">Klein</label>
             <input type="radio" id="medium" name="size" value="medium">
@@ -49,7 +48,7 @@
             <input type="radio" id="large" name="size" value="large">
             <label for="large">Groß</label>
             <br>
-            <label for="extras">Extras wählen:</label>
+            <label>Extras wählen:</label>
             <input type="checkbox" id="cheese" name="extras[]" value="cheese">
             <label for="cheese">Käse</label>
             <input type="checkbox" id="mushrooms" name="extras[]" value="mushrooms">
@@ -63,9 +62,12 @@
             <input type="submit" value="Bestellen">
         </form>
     </section>
-
     <footer>
-        <p>&copy; 2024 Pizzaservice</p>
+        <p>© 2024 Pizzaservice</p>
     </footer>
 </body>
 </html>
+HTML;
+
+echo $html;
+?>
