@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">  
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Bestellseite</title>
 </head>
 <body>
@@ -9,10 +9,9 @@
         <h1>Willkommen beim Pizzaservice</h1>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Speisekarte</a></li>
-                <li><a href="#">Bestellen</a></li>
-                <li><a href="#">Kontakt</a></li>
+                <li><a href="fahrer.php">Fahrer</a></li>
+                <li><a href="baecker.php">Bäcker</a></li>
+                <li><a href="kunde.php">Kunde</a></li>
             </ul>
         </nav>
     </header>
@@ -21,7 +20,7 @@
         <h2>Bestellung aufgeben</h2>
         <form action="https://echo.fbi.h-da.de/" method="post">
             <label for="pizza">Pizza wählen:</label>
-            <select id="pizza" name="pizza">
+            <select id="pizza" name="pizza[]" multiple>
                 <option value="salami">Salami-Pizza</option>
                 <option value="margherita">Margherita</option>
                 <option value="vegetariana">Vegetariana</option>
@@ -41,7 +40,7 @@
                 <p>Hawaii - 5.50 €</p>
             </div>
             <br>
-            <label for="size">Größe wählen:</label>
+            <label>Größe wählen:</label>
             <input type="radio" id="small" name="size" value="small">
             <label for="small">Klein</label>
             <input type="radio" id="medium" name="size" value="medium">
@@ -49,7 +48,7 @@
             <input type="radio" id="large" name="size" value="large">
             <label for="large">Groß</label>
             <br>
-            <label for="extras">Extras wählen:</label>
+            <label>Extras wählen:</label>
             <input type="checkbox" id="cheese" name="extras[]" value="cheese">
             <label for="cheese">Käse</label>
             <input type="checkbox" id="mushrooms" name="extras[]" value="mushrooms">

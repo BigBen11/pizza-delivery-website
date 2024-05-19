@@ -11,10 +11,9 @@ $html = <<<HTML
         <h1>Willkommen beim Pizzaservice</h1>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Speisekarte</a></li>
-                <li><a href="#">Bestellen</a></li>
-                <li><a href="#">Kontakt</a></li>
+                <li><a href="fahrer.php">Fahrer</a></li>
+                <li><a href="baecker.php">Bäcker</a></li>
+                <li><a href="kunde.php">Kunde</a></li>
             </ul>
         </nav>
     </header>
