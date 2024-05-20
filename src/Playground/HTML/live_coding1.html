@@ -1,58 +1,40 @@
 <!DOCTYPE html>
 <html lang="de">  
 <head>
-    <meta charset="UTF-8" />
-    <!-- für später: CSS include -->
-    <!-- <link rel="stylesheet" href="XXX.css"/> -->
-    <!-- für später: JavaScript include -->
-    <!-- <script src="XXX.js"></script> -->
-
-    <script>
-        function GetOrPost() {
-            "use strict";
-            let mode;
-            if (document.getElementById('radioGet').checked) {
-                mode = "get";
-            } else {
-                mode = "post";
-            }
-            document.getElementById('myForm').setAttribute("method", mode);
-        }
-    </script>
+    <meta charset="UTF-8">
 
     <title>Text des Titels</title>
 </head>
 <body>
-    <section> <b>Bestellung</b> </section>
+    <h1> <b>Bestellung</b> </h1>
     
-    <hr/> <!-- später in CSS implementieren! -->
+    <hr> <!-- später in CSS implementieren! -->
 
-    <article> <b>Speisekarte</b> </article>
+    <h2> <b>Speisekarte</b> </h2>
     
     <div>
-        <img src="pizza_foto.jpg" alt="Margherita" width="90" height="100"/>
+        <img src="pizza_foto.jpg" alt="Margherita" width="90" height="100">
         <div> Margherita </div>
         <div> 9.00 € </div>
     </div>
 
     <div>
-        <img src="pizza_foto.jpg" alt="Salami" width="90" height="100"/>
+        <img src="pizza_foto.jpg" alt="Salami" width="90" height="100">
         <div> Salami </div>
         <div> 12.50 € </div>
     </div>
 
     <div>
-        <img src="pizza_foto.jpg" alt="Hawaii" width="90" height="100"/>
+        <img src="pizza_foto.jpg" alt="Hawaii" width="90" height="100">
         <div> Hawaii </div>
         <div> 13.00 € </div>
     </div>
 
-    </br> <!-- später in CSS implementieren! -->
+    <br> <!-- später in CSS implementieren! -->
 
-    <article> <b>Warenkorb</b> </article>
+    <h2> <b>Warenkorb</b> </h2>
 
-    <form onsubmit="GetOrPost()" id="myForm" accept-charset="UTF-8" action="http://localhost/my-cgi-bin/echo.php"
-      method="get">
+    <form id="myForm" accept-charset="UTF-8" action="https://echo.fbi.h-da.de/" method="get">
 
         <fieldset>
             <legend>Bitte wählen Sie aus</legend>
@@ -64,19 +46,16 @@
             </select>
         </fieldset>
 
-        </br> <!-- später in CSS implementieren! -->
+        <br> <!-- später in CSS implementieren! -->
 
-        <input type="text" name="Adresse" placeholder="Ihre Adresse"/>
+        <input type="text" name="Adresse" placeholder="Ihre Adresse">
 
-        </br> <!-- später in CSS implementieren! -->
-        </br> <!-- später in CSS implementieren! -->
+        <br> <!-- später in CSS implementieren! -->
+        <br> <!-- später in CSS implementieren! -->
 
-        <input type="reset" name="Alle_löschen" value="Alle löschen"/>
-        <input type="reset" name="Auswahl_löschen" value="Auswahl löschen"/>
-        <input type="submit" id="B1" name="Bestellen" value="Bestellen"/>
+        <input type="reset" name="Alle_löschen" value="Alle löschen">
+        <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
+        <input type="submit" id="B1" name="Bestellen" value="Bestellen">
     </form>
 </body>
 </html>
-
-
-<!-- testtesttest -->
