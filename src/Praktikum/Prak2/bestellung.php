@@ -21,7 +21,8 @@ class Bestellung extends Page
 
     protected function getViewData():array
     {
-        $sql = "SELECT * FROM ordering";
+        
+        /*$sql = "SELECT * FROM ordering";
         $recordset = $this->database->query($sql);
         $recordset = $this->database->query($sql);
         if (!$recordset) {
@@ -35,6 +36,7 @@ class Bestellung extends Page
         var_dump($record);
 
         $recordset->free();
+        */
 
 
        return array();

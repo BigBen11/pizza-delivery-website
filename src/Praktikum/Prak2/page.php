@@ -18,10 +18,6 @@ abstract class Page
 
         $this->_database = new MySQLi($host, "public", "public", "pizzaservice");
 
-        
-        $sql = "SELECT * FROM ordering";
-        $recordset = $this->database->query($sql);
-        var_dump($recordset);
 
         if ($this->_database->connect_errno) {
             throw new Exception("Connect failed: " . $this->_database->connect_errno);
