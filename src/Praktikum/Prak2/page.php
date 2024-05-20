@@ -18,7 +18,6 @@ abstract class Page
 
         $this->_database = new MySQLi($host, "public", "public", "pizzaservice");
 
-
         if ($this->_database->connect_errno) {
             throw new Exception("Connect failed: " . $this->_database->connect_errno);
         }
@@ -49,6 +48,16 @@ abstract class Page
                 <title>$title</title>
             </head>
             <body>
+                <header>
+                    <h1>Willkommen beim Pizzaservice!</h1>
+                    <nav>
+                        <ul>
+                            <li><a href="fahrer.php">Fahrer</a></li>
+                            <li><a href="bestellungen.php">Bestellungen</a></li>
+                            <li><a href="kunde.php">Kunde</a></li>
+                        </ul>
+                    </nav>
+                </header>
                 
             EOT;
 
