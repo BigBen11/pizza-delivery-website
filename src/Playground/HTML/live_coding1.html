@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">  
+<head>
+    <meta charset="UTF-8" />
+    <!-- für später: CSS include -->
+    <!-- <link rel="stylesheet" href="XXX.css"/> -->
+    <!-- für später: JavaScript include -->
+    <!-- <script src="XXX.js"></script> -->
+
+    <script>
+        function GetOrPost() {
+            "use strict";
+            let mode;
+            if (document.getElementById('radioGet').checked) {
+                mode = "get";
+            } else {
+                mode = "post";
+            }
+            document.getElementById('myForm').setAttribute("method", mode);
+        }
+    </script>
+
+    <title>Text des Titels</title>
+</head>
+<body>
+    <section> <b>Bestellung</b> </section>
+    
+    <hr/> <!-- später in CSS implementieren! -->
+
+    <article> <b>Speisekarte</b> </article>
+    
+    <div>
+        <img src="pizza_foto.jpg" alt="Margherita" width="90" height="100"/>
+        <div> Margherita </div>
+        <div> 9.00 € </div>
+    </div>
+
+    <div>
+        <img src="pizza_foto.jpg" alt="Salami" width="90" height="100"/>
+        <div> Salami </div>
+        <div> 12.50 € </div>
+    </div>
+
+    <div>
+        <img src="pizza_foto.jpg" alt="Hawaii" width="90" height="100"/>
+        <div> Hawaii </div>
+        <div> 13.00 € </div>
+    </div>
+
+    </br> <!-- später in CSS implementieren! -->
+
+    <article> <b>Warenkorb</b> </article>
+
+    <form onsubmit="GetOrPost()" id="myForm" accept-charset="UTF-8" action="http://localhost/my-cgi-bin/echo.php"
+      method="get">
+
+        <fieldset>
+            <legend>Bitte wählen Sie aus</legend>
+
+            <select name="Pizza_type" id="Pizza_type" size="5" onchange="alert(this.form.XXX.options[this.form.XXX.selectedIndex].value)">
+                <option value="1"> Margherita </option>
+                <option value="2"> Salami </option>
+                <option value="3"> Hawaii </option>
+            </select>
+        </fieldset>
+
+        </br> <!-- später in CSS implementieren! -->
+
+        <input type="text" name="Adresse" placeholder="Ihre Adresse"/>
+
+        </br> <!-- später in CSS implementieren! -->
+        </br> <!-- später in CSS implementieren! -->
+
+        <input type="reset" name="Alle_löschen" value="Alle löschen"/>
+        <input type="reset" name="Auswahl_löschen" value="Auswahl löschen"/>
+        <input type="submit" id="B1" name="Bestellen" value="Bestellen"/>
+    </form>
+</body>
+</html>
+
+
+<!-- testtesttest -->

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">  
+<head>
+    <meta charset="UTF-8">
+    <title>Fahrer-Seite</title>
+</head>
+<body>
+    <header>
+        <h1>Willkommen beim Pizzaservice, lieber Fahrer!</h1>
+        <nav>
+            <ul>
+                <li><a href="bestellungen.php">Bestellungen</a></li>
+                <li><a href="baecker.php">Bäcker</a></li>
+                <li><a href="kunde.php">Kunde</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="lieferungen">
+        <h2>Fahrer (auslieferbare Bestellungen)</h2>
+        <form action="https://echo.fbi.h-da.de/" method="post">
+            <table>
+                <tr>
+                    <th>Kunde und Adresse</th>
+                    <th>Preis</th>
+                    <th>Pizza</th>
+                    <th>fertig</th>
+                    <th>unterwegs</th>
+                    <th>geliefert</th>
+                </tr>
+                <tr>
+                    <td>Schulz, Kasinostr. 5</td>
+                    <td>13,50 €</td>
+                    <td>Margherita, Salami, Tonno</td>
+                    <td><input type="radio" id="schulz_bestellung_fertig" name="schulz_bestellung_status" value="fertig"></td>
+                    <td><input type="radio" id="schulz_bestellung_unterwegs" name="schulz_bestellung_status" value="unterwegs"></td>
+                    <td><input type="radio" id="schulz_bestellung_geliefert" name="schulz_bestellung_status" value="geliefert"></td>
+                </tr>
+                <tr>
+                    <td>Müller, Rheinstr. 11</td>
+                    <td>10,00 €</td>
+                    <td>Salami, Prosciutto</td>
+                    <td><input type="radio" id="mueller_bestellung_fertig" name="mueller_bestellung_status" value="fertig"></td>
+                    <td><input type="radio" id="mueller_bestellung_unterwegs" name="mueller_bestellung_status" value="unterwegs"></td>
+                    <td><input type="radio" id="mueller_bestellung_geliefert" name="mueller_bestellung_status" value="geliefert"></td>
+                </tr>
+                <!-- Fügen Sie hier weitere Zeilen für andere Bestellungen hinzu -->
+            </table>
+            <input type="submit" value="Status aktualisieren">
+        </form>
+    </section>
+    <footer>
+        <p>© 2024 Pizzaservice</p>
+    </footer>
+</body>
+</html>
