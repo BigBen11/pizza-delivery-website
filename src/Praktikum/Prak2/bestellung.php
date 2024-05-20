@@ -21,6 +21,21 @@ class Bestellung extends Page
 
     protected function getViewData():array
     {
+        $sql = "SELECT * FROM ordering";
+        $recordset = $this->database->query($sql);
+        $recordset = $this->database->query($sql);
+        if (!$recordset) {
+            throw new Exception("Abfrage fehlgeschlagen: " . $this->database->error);
+        }
+
+        // read selected records into result array
+        $record = $recordset->fetch_assoc();
+
+
+        var_dump($record);
+
+        $recordset->free();
+
 
        return array();
     }
