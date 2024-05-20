@@ -2,7 +2,7 @@
 
 abstract class Page
 {
-    protected MySQLi $_database;
+    protected MySQLi $db;
 
     protected function __construct()
     {
@@ -16,27 +16,27 @@ abstract class Page
         }
         /********************************************/
 
-        $this->_database = new MySQLi($host, "public", "public", "pizzaservice");
+        $this->db = new MySQLi($host, "public", "public", "pizzaservice");
 
-        if ($this->_database->connect_errno) {
-            throw new Exception("Connect failed: " . $this->_database->connect_errno);
+        if ($this->db->connect_errno) {
+            throw new Exception("Connect failed: " . $this->db->connect_errno);
         }
 
         // set charset to UTF8
-        if (!$this->_database->set_charset("utf8")) {
-            throw new Exception($this->_database->error);
+        if (!$this->db->set_charset("utf8")) {
+            throw new Exception($this->db->error);
         }
     }
 
     public function __destruct()
     {
-        $this->_database->close();
+        $this->db->close();
     }
 
     protected function generatePageHeader(string $title = "", string $jsFile = "", bool $autoreload = false):void
     {
         $title = htmlspecialchars($title);
-        header("Content-type: text/html; charset=UTF-8");
+        //header("Content-type: text/html; charset=UTF-8");
 
         // TO DO: handle all parameters
 
@@ -53,7 +53,8 @@ abstract class Page
                     <nav>
                         <ul>
                             <li><a href="fahrer.php">Fahrer</a></li>
-                            <li><a href="bestellungen.php">Bestellungen</a></li>
+                            <li><a href="baecker.php"> Bäcker</a></li>
+                            <li><a href="bestellung.php">Bestellungen</a></li>
                             <li><a href="kunde.php">Kunde</a></li>
                         </ul>
                     </nav>

@@ -22,88 +22,99 @@ class Bestellung extends Page
     protected function getViewData():array
     {
         
-        /*$sql = "SELECT * FROM ordering";
-        $recordset = $this->database->query($sql);
-        $recordset = $this->database->query($sql);
+        $sql = "SELECT * FROM pizzaservice.article ORDER BY article_id ASC";
+        $recordset = $this->db->query($sql);
+
         if (!$recordset) {
-            throw new Exception("Abfrage fehlgeschlagen: " . $this->database->error);
+            throw new Exception("Abfrage fehlgeschlagen: " . $this->db->error);
         }
 
-        // read selected records into result array
-        $record = $recordset->fetch_assoc();
+        $articles = [];
 
+        // Read selected records into result array
+        while ($record = $recordset->fetch_assoc()) {
+            // article_id as the key and the other attributes as values
+            $articles[$record['article_id']] = [
+                'name' => $record['name'],
+                'picture' => $record['picture'],
+                'price' => $record['price']
+            ];
+        }
 
-        var_dump($record);
+        //var_dump($articles);
 
         $recordset->free();
-        */
+        
 
 
-       return array();
+       return $articles;
     }
 
-    protected function generateView():void
-{
-    $data = $this->getViewData();
+    protected function generateView():void {
 
-    $this->generatePageHeader('Bestellung'); 
-
-    echo <<<HTML
-        <h1> <b>Bestellung</b> </h1>
-        
-        <hr> <!-- später in CSS implementieren! -->
-
-        <h2> <b>Speisekarte</b> </h2>
-        
-        <div>
-            <img src="pizza_foto.jpg" alt="Margherita" width="90" height="100">
-            <div> Margherita </div>
-            <div> 9.00 € </div>
-        </div>
-
-        <div>
-            <img src="pizza_foto.jpg" alt="Salami" width="90" height="100">
-            <div> Salami </div>
-            <div> 12.50 € </div>
-        </div>
-
-        <div>
-            <img src="pizza_foto.jpg" alt="Hawaii" width="90" height="100">
-            <div> Hawaii </div>
-            <div> 13.00 € </div>
-        </div>
-
-        <br> <!-- später in CSS implementieren! -->
-
-        <h2> <b>Warenkorb</b> </h2>
-
-        <form id="myForm" accept-charset="UTF-8" action="https://echo.fbi.h-da.de/" method="post">
-
-            <fieldset>
-                <legend>Bitte wählen Sie aus</legend>
-
-                <select name="Pizza_type[]" id="Pizza_type" size="5" multiple>
-                    <option value="1"> Margherita </option>
-                    <option value="2"> Salami </option>
-                    <option value="3"> Hawaii </option>
-                </select>
-            </fieldset>
-
+        $articles = $this->getViewData();
+    
+        $this->generatePageHeader('Bestellung'); 
+    
+        echo <<<HTML
+            <h1> <b>Bestellung</b> </h1>
+            
+            <hr> <!-- später in CSS implementieren! -->
+    
+            <h2> <b>Speisekarte</b> </h2>
+        HTML;
+    
+        // Generate the HTML for each pizza
+        foreach ($articles as $article_id => $article) {
+            echo <<<HTML
+                <div>
+                    <img src="{$article['picture']}" alt="{$article['name']}" width="90" height="100">
+                    <div> {$article['name']} </div>
+                    <div> {$article['price']} € </div>
+                </div>
+            HTML;
+        }
+    
+        echo <<<HTML
             <br> <!-- später in CSS implementieren! -->
-
-            <input type="text" name="Adresse" placeholder="Ihre Adresse">
-
-            <br> <!-- später in CSS implementieren! -->
-            <br> <!-- später in CSS implementieren! -->
-
-            <input type="reset" name="Alle_löschen" value="Alle löschen">
-            <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
-            <input type="submit" id="B1" name="Bestellen" value="Bestellen">
-        </form>
-    HTML;
-
-    $this->generatePageFooter();
-}
+    
+            <h2> <b>Warenkorb</b> </h2>
+    
+            <form id="myForm" accept-charset="UTF-8" action="https://echo.fbi.h-da.de/" method="post">
+    
+                <fieldset>
+                    <legend>Bitte wählen Sie aus</legend>
+    
+                    <select name="Pizza_type[]" id="Pizza_type" size="5" multiple>
+        HTML;
+    
+        // Generate the options for each pizza
+        foreach ($articles as $article_id => $article) {
+            echo <<<HTML
+                        <option value="{$article_id}"> {$article['name']} </option>
+            HTML;
+        }
+    
+        echo <<<HTML
+                    </select>
+                </fieldset>
+    
+                <br> <!-- später in CSS implementieren! -->
+    
+                <input type="text" name="Adresse" placeholder="Ihre Adresse">
+    
+                <br> <!-- später in CSS implementieren! -->
+                <br> <!-- später in CSS implementieren! -->
+    
+                <input type="reset" name="Alle_löschen" value="Alle löschen">
+                <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
+                <input type="submit" id="B1" name="Bestellen" value="Bestellen">
+            </form>
+        HTML;
+    
+        $this->generatePageFooter();
+    }
+    
 
 
     public static function main():void
