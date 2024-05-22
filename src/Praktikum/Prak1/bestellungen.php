@@ -20,13 +20,14 @@ $html = <<<HTML
     <section id="bestellung">
         <h2>Bestellung aufgeben</h2>
         <form action="https://echo.fbi.h-da.de/" method="post">
+            
             <label for="pizza">Pizza wählen:</label>
             <select id="pizza" name="pizza[]" multiple>
                 <option value="salami">Salami-Pizza</option>
                 <option value="margherita">Margherita</option>
                 <option value="vegetariana">Vegetariana</option>
             </select>
-            <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
+            <input type="text" name="Adresse" placeholder="Ihre Adresse" required> 
             <div class="pizza-option">
                 <img id='salami' src='Pizza.jpeg' alt='Salami Pizza Bild' style='display:block; width:100px; height:100px;'>
                 <p>Salami-Pizza - 4.50 €</p>
