@@ -19,7 +19,7 @@ class Fahrer extends Page
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             foreach ($_POST['status'] as $orderId => $status) {
-                $query = "UPDATE `orders` SET `status` = ? WHERE `id` = ?";
+                $query = "UPDATE `ordered_article` SET `status` = ? WHERE `ordering_id` = ?";
                 $stmt = $this->db->prepare($query);
                 $stmt->bind_param('si', $status, $orderId);
                 $stmt->execute();
@@ -30,59 +30,67 @@ class Fahrer extends Page
 
     protected function getViewData():array
     {
-        $query = "SELECT `orders`.`id`, `orders`.`status`, `customers`.`name` AS customer_name 
-                  FROM `orders` 
-                  JOIN `customers` ON `orders`.`customer_id` = `customers`.`id` 
-                  WHERE `orders`.`status` = 'Fertig'";
+        $query = "SELECT `ordered_article`.`ordering_id`, `ordering`.`address`, GROUP_CONCAT(`article`.`name` SEPARATOR ', ') AS pizza_types
+                  FROM `ordered_article` 
+                  JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
+                  JOIN `ordering` ON `ordered_article`.`ordering_id` = `ordering`.`ordering_id`
+                  WHERE `ordered_article`.`status` = 3
+                  GROUP BY `ordered_article`.`ordering_id`, `ordering`.`address`";
         $result = $this->db->query($query);
         $orders = [];
-
+    
         while ($row = $result->fetch_assoc()) {
             $orders[] = $row;
         }
         $result->free();
-
+    
         return $orders;
     }
+    
+
+
 
     protected function generateView():void
-    {
-        $data = $this->getViewData();
+{
+    $data = $this->getViewData();
 
-        $this->generatePageHeader('Fahrer'); 
+    $this->generatePageHeader('Fahrer'); 
+
+    echo <<<HTML
+    <h1> <b>Fahrer (auslieferbare Bestellungen)</b> </h1>
+    <hr>
+    <p>1. Bestellt   2. Im Ofen   3. Fertig   4. Unterwegs</p>
+    <form method="post" action="fahrer.php">
+HTML;
+
+    foreach ($data as $order) {
+        $id = htmlspecialchars($order['ordering_id']);
+        $address = htmlspecialchars($order['address']);
+        $pizzaTypes = htmlspecialchars($order['pizza_types']);
+        $status = array_key_exists('status', $order) ? htmlspecialchars($order['status']) : '';
+        
+        $checkedFertig = $status == '3' ? 'checked' : '';
+        $checkedUnterwegs = $status == '4' ? 'checked' : '';
 
         echo <<<HTML
-        <h1> <b>Fahrer (auslieferbare Bestellungen)</b> </h1>
-        <hr>
-        <p>1. Bestellt   2. Im Ofen   3. Fertig   4. Unterwegs</p>
-        <form method="post" action="fahrer.php">
+        <label>
+            <input type="radio" name="status[$id]" value="2" $checkedFertig/> Geliefert
+            <input type="radio" name="status[$id]" value="1" $checkedFertig/> Fertig
+            <input type="radio" name="status[$id]" value="0" $checkedUnterwegs/> Unterwegs
+            Bestellung von $address: $pizzaTypes
+        </label>
+        <br>
 HTML;
-
-        foreach ($data as $order) {
-            $id = htmlspecialchars($order['id']);
-            $status = htmlspecialchars($order['status']);
-            $customerName = htmlspecialchars($order['customer_name']);
-
-            $checkedFertig = $status == 'Fertig' ? 'checked' : '';
-            $checkedUnterwegs = $status == 'Unterwegs' ? 'checked' : '';
-
-            echo <<<HTML
-            <label>
-                <input type="radio" name="status[$id]" value="Fertig" $checkedFertig/> Fertig
-                <input type="radio" name="status[$id]" value="Unterwegs" $checkedUnterwegs/> Unterwegs
-                Bestellung von $customerName
-            </label>
-            <br>
-HTML;
-        }
-
-        echo <<<HTML
-            <input type="submit" value="Aktualisieren">
-        </form>
-HTML;
-
-        $this->generatePageFooter();
     }
+
+    echo <<<HTML
+        <input type="submit" value="Aktualisieren">
+    </form>
+HTML;
+
+    $this->generatePageFooter();
+}
+
 
     public static function main():void
     {

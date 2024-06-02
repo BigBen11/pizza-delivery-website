@@ -18,10 +18,17 @@ class Baecker extends Page
         parent::processReceivedData();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            foreach ($_POST['status'] as $pizzaId => $status) {
-                $query = "UPDATE `order_items` SET `status` = ? WHERE `id` = ?";
+            $statusMap = [
+                'Bestellt' => 1,
+                'Im Ofen' => 2,
+                'Fertig' => 3,
+            
+            ];
+            foreach ($_POST['status'] as $orderedArticleId => $status) {
+                $status = $statusMap[$status];
+                $query = "UPDATE `ordered_article` SET `status` = ? WHERE `ordered_article_id` = ?";
                 $stmt = $this->db->prepare($query);
-                $stmt->bind_param('si', $status, $pizzaId);
+                $stmt->bind_param('ii', $status, $orderedArticleId);
                 $stmt->execute();
                 $stmt->close();
             }
@@ -29,48 +36,59 @@ class Baecker extends Page
     }
 
     protected function getViewData():array
-    {
-        $query = "SELECT `order_items`.`id`, `pizzas`.`name`, `order_items`.`status` 
-                  FROM `order_items` 
-                  JOIN `pizzas` ON `order_items`.`pizza_id` = `pizzas`.`id`";
-        $result = $this->db->query($query);
-        $pizzas = [];
+{
+    $query = "SELECT `ordered_article`.`ordered_article_id`, `article`.`name`, `ordered_article`.`status` 
+              FROM `ordered_article` 
+              JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id`
+              WHERE `ordered_article`.`status` != 3"; // Nur Pizzen abrufen, die nicht "Fertig" sind
 
-        while ($row = $result->fetch_assoc()) {
-            $pizzas[] = $row;
-        }
-        $result->free();
+    $result = $this->db->query($query);
+    $pizzas = [];
 
-        return $pizzas;
+    while ($row = $result->fetch_assoc()) {
+        $pizzas[] = $row;
     }
+    $result->free();
+
+    return $pizzas;
+}
+
 
     protected function generateView():void
     {
         $data = $this->getViewData();
+        $statusMap = [
+            1 => 'Bestellt',
+            2 => 'Im Ofen',
+            3 => 'Fertig',
+            
+        ];
 
         $this->generatePageHeader('Bäcker'); 
 
         echo <<<HTML
         <h1> <b>Pizzabäcker (bestellte Pizzen)</b> </h1>
         <hr>
-        <p>1. Bestellt   2. Im Ofen   3. Fertig</p>
+        
         <form method="post" action="baecker.php">
 HTML;
 
         foreach ($data as $pizza) {
-            $id = htmlspecialchars($pizza['id']);
+            $id = htmlspecialchars($pizza['ordered_article_id']);
             $name = htmlspecialchars($pizza['name']);
-            $status = htmlspecialchars($pizza['status']);
+            $status = htmlspecialchars($statusMap[$pizza['status']]);
 
             $checkedBestellt = $status == 'Bestellt' ? 'checked' : '';
             $checkedImOfen = $status == 'Im Ofen' ? 'checked' : '';
             $checkedFertig = $status == 'Fertig' ? 'checked' : '';
+            
 
             echo <<<HTML
             <label>
                 <input type="radio" name="status[$id]" value="Bestellt" $checkedBestellt/> Bestellt
                 <input type="radio" name="status[$id]" value="Im Ofen" $checkedImOfen/> Im Ofen
                 <input type="radio" name="status[$id]" value="Fertig" $checkedFertig/> Fertig
+               
                 $name
             </label>
             <br>

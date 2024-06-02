@@ -21,7 +21,7 @@ class Bestellung extends Page
             $pizzaIds = $_POST['Pizza_type'];
             $address = $_POST['Adresse'];
 
-            $query = "INSERT INTO `orders` (`address`) VALUES (?)";
+            $query = "INSERT INTO `ordering` (`address`) VALUES (?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('s', $address);
             $stmt->execute();
@@ -29,7 +29,7 @@ class Bestellung extends Page
             $stmt->close();
 
             foreach ($pizzaIds as $pizzaId) {
-                $query = "INSERT INTO `order_items` (`order_id`, `pizza_id`, `status`) VALUES (?, ?, 'Bestellt')";
+                $query = "INSERT INTO `ordered_article` (`ordering_id`, `article_id`, `status`) VALUES (?, ?, 1)";
                 $stmt = $this->db->prepare($query);
                 $stmt->bind_param('ii', $orderId, $pizzaId);
                 $stmt->execute();
@@ -40,7 +40,7 @@ class Bestellung extends Page
 
     protected function getViewData():array
     {
-        $query = "SELECT * FROM `pizzas` ORDER BY `id` ASC";
+        $query = "SELECT * FROM `article` ORDER BY `article_id` ASC";
         $result = $this->db->query($query);
         $pizzas = [];
 
@@ -65,7 +65,7 @@ class Bestellung extends Page
 HTML;
 
         foreach ($pizzas as $pizza) {
-            $id = htmlspecialchars($pizza['id']);
+            $id = htmlspecialchars($pizza['article_id']);
             $name = htmlspecialchars($pizza['name']);
             $picture = htmlspecialchars($pizza['picture']);
             $price = htmlspecialchars($pizza['price']);
@@ -89,7 +89,7 @@ HTML;
 HTML;
 
         foreach ($pizzas as $pizza) {
-            $id = htmlspecialchars($pizza['id']);
+            $id = htmlspecialchars($pizza['article_id']);
             $name = htmlspecialchars($pizza['name']);
 
             echo <<<HTML
@@ -101,7 +101,7 @@ HTML;
                 </select>
             </fieldset>
             <br>
-            <input type="text" name="Adresse" placeholder="Ihre Adresse">
+            <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
             <br><br>
             <input type="reset" name="Alle_löschen" value="Alle löschen">
             <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">

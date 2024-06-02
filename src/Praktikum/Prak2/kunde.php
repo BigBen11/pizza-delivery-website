@@ -20,11 +20,11 @@ class Kunde extends Page
 
     protected function getViewData():array
     {
-        $query = "SELECT `orders`.`id`, `pizzas`.`name`, `order_items`.`status` 
-                  FROM `orders` 
-                  JOIN `order_items` ON `orders`.`id` = `order_items`.`order_id` 
-                  JOIN `pizzas` ON `order_items`.`pizza_id` = `pizzas`.`id` 
-                  WHERE `orders`.`customer_id` = ?"; // Kunde wird später per Session bestimmt
+        $query = "SELECT `ordering`.`ordering_id`, `article`.`name`, `ordered_article`.`status` 
+                  FROM `ordering` 
+                  JOIN `ordered_article` ON `ordering`.`ordering_id` = `ordered_article`.`ordering_id` 
+                  JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
+                  WHERE `ordering`.`ordering_id` = ?"; // Kunde wird später per Session bestimmt
         $stmt = $this->db->prepare($query);
         $customerId = 1; // Beispiel-Kunde, später durch Session ersetzt
         $stmt->bind_param('i', $customerId);
