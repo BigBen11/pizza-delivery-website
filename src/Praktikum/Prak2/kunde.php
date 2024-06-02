@@ -20,40 +20,53 @@ class Kunde extends Page
 
     protected function getViewData():array
     {
-        $pizza_states["Margherita"] = "Bestellt";
-        $pizza_states["Salami"] = "Bestellt";
-        $pizza_states["Hawaii"] = "Im Ofen";
+        $query = "SELECT `orders`.`id`, `pizzas`.`name`, `order_items`.`status` 
+                  FROM `orders` 
+                  JOIN `order_items` ON `orders`.`id` = `order_items`.`order_id` 
+                  JOIN `pizzas` ON `order_items`.`pizza_id` = `pizzas`.`id` 
+                  WHERE `orders`.`customer_id` = ?"; // Kunde wird später per Session bestimmt
+        $stmt = $this->db->prepare($query);
+        $customerId = 1; // Beispiel-Kunde, später durch Session ersetzt
+        $stmt->bind_param('i', $customerId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $orders = [];
 
-       return $pizza_states;
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+        $stmt->close();
+
+        return $orders;
     }
 
-    protected function generateView():void {
-
-        $pizza_states = $this->getViewData();
+    protected function generateView():void
+    {
+        $orders = $this->getViewData();
 
         $this->generatePageHeader('Kunde'); 
 
-        echo <<< HTML
-            <h1> <b>Kunde (Lieferstatus)</b> </h1>
-            <hr> <!-- später in CSS implementieren! -->
-        HTML;
+        echo <<<HTML
+        <h1> <b>Kunde (Lieferstatus)</b> </h1>
+        <hr>
+HTML;
 
         echo "<ul>";
-        foreach ($pizza_states as $pizza => $state){
-            echo "<li>" . $pizza . ": " . $state . "</li>";
-        } 
+        foreach ($orders as $order) {
+            $pizzaName = htmlspecialchars($order['name']);
+            $status = htmlspecialchars($order['status']);
+            echo "<li>" . $pizzaName . ": " . $status . "</li>";
+        }
         echo "</ul>";
 
-        echo <<< HTML
-            <a href="./bestellung.php">
+        echo <<<HTML
+        <a href="./bestellung.php">
             <button>Neue Bestellung</button>
-            </a>
-
-        HTML;
+        </a>
+HTML;
 
         $this->generatePageFooter();
     }
-
 
     public static function main():void
     {
@@ -68,6 +81,5 @@ class Kunde extends Page
     }
 }
 
-// This call is starting the creation of the page. 
 Kunde::main();
-
+?>

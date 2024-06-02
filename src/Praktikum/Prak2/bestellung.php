@@ -15,107 +15,102 @@ class Bestellung extends Page
 
     protected function processReceivedData():void
     {
-
         parent::processReceivedData();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $pizzaIds = $_POST['Pizza_type'];
+            $address = $_POST['Adresse'];
+
+            $query = "INSERT INTO `orders` (`address`) VALUES (?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('s', $address);
+            $stmt->execute();
+            $orderId = $stmt->insert_id;
+            $stmt->close();
+
+            foreach ($pizzaIds as $pizzaId) {
+                $query = "INSERT INTO `order_items` (`order_id`, `pizza_id`, `status`) VALUES (?, ?, 'Bestellt')";
+                $stmt = $this->db->prepare($query);
+                $stmt->bind_param('ii', $orderId, $pizzaId);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
     }
 
     protected function getViewData():array
     {
-        
-        $sql = "SELECT * FROM pizzaservice.article ORDER BY article_id ASC";
-        $recordset = $this->db->query($sql);
+        $query = "SELECT * FROM `pizzas` ORDER BY `id` ASC";
+        $result = $this->db->query($query);
+        $pizzas = [];
 
-        if (!$recordset) {
-            throw new Exception("Abfrage fehlgeschlagen: " . $this->db->error);
+        while ($row = $result->fetch_assoc()) {
+            $pizzas[] = $row;
         }
+        $result->free();
 
-        $articles = [];
-
-        // Read selected records into result array
-        while ($record = $recordset->fetch_assoc()) {
-            // article_id as the key and the other attributes as values
-            $articles[$record['article_id']] = [
-                'name' => $record['name'],
-                'picture' => $record['picture'],
-                'price' => $record['price']
-            ];
-        }
-
-        //var_dump($articles);
-
-        $recordset->free();
-        
-
-
-       return $articles;
+        return $pizzas;
     }
 
-    protected function generateView():void {
+    protected function generateView():void
+    {
+        $pizzas = $this->getViewData();
 
-        $articles = $this->getViewData();
-    
         $this->generatePageHeader('Bestellung'); 
-    
+
         echo <<<HTML
-            <h1> <b>Bestellung</b> </h1>
-            
-            <hr> <!-- später in CSS implementieren! -->
-    
-            <h2> <b>Speisekarte</b> </h2>
-        HTML;
-    
-        // Generate the HTML for each pizza
-        foreach ($articles as $article_id => $article) {
+        <h1> <b>Bestellung</b> </h1>
+        <hr>
+        <h2> <b>Speisekarte</b> </h2>
+HTML;
+
+        foreach ($pizzas as $pizza) {
+            $id = htmlspecialchars($pizza['id']);
+            $name = htmlspecialchars($pizza['name']);
+            $picture = htmlspecialchars($pizza['picture']);
+            $price = htmlspecialchars($pizza['price']);
+
             echo <<<HTML
-                <div>
-                    <img src="{$article['picture']}" alt="{$article['name']}" width="90" height="100">
-                    <div> {$article['name']} </div>
-                    <div> {$article['price']} € </div>
-                </div>
-            HTML;
+            <div>
+                <img src="$picture" alt="$name" width="90" height="100">
+                <div> $name </div>
+                <div> $price € </div>
+            </div>
+HTML;
         }
-    
+
         echo <<<HTML
-            <br> <!-- später in CSS implementieren! -->
-    
-            <h2> <b>Warenkorb</b> </h2>
-    
-            <form id="myForm" accept-charset="UTF-8" action="https://echo.fbi.h-da.de/" method="post">
-    
-                <fieldset>
-                    <legend>Bitte wählen Sie aus</legend>
-    
-                    <select name="Pizza_type[]" id="Pizza_type" size="5" multiple>
-        HTML;
-    
-        // Generate the options for each pizza
-        foreach ($articles as $article_id => $article) {
+        <br>
+        <h2> <b>Warenkorb</b> </h2>
+        <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
+            <fieldset>
+                <legend>Bitte wählen Sie aus</legend>
+                <select name="Pizza_type[]" id="Pizza_type" size="5" multiple>
+HTML;
+
+        foreach ($pizzas as $pizza) {
+            $id = htmlspecialchars($pizza['id']);
+            $name = htmlspecialchars($pizza['name']);
+
             echo <<<HTML
-                        <option value="{$article_id}"> {$article['name']} </option>
-            HTML;
+                    <option value="$id"> $name </option>
+HTML;
         }
-    
+
         echo <<<HTML
-                    </select>
-                </fieldset>
-    
-                <br> <!-- später in CSS implementieren! -->
-    
-                <input type="text" name="Adresse" placeholder="Ihre Adresse">
-    
-                <br> <!-- später in CSS implementieren! -->
-                <br> <!-- später in CSS implementieren! -->
-    
-                <input type="reset" name="Alle_löschen" value="Alle löschen">
-                <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
-                <input type="submit" id="B1" name="Bestellen" value="Bestellen">
-            </form>
-        HTML;
-    
+                </select>
+            </fieldset>
+            <br>
+            <input type="text" name="Adresse" placeholder="Ihre Adresse">
+            <br><br>
+            <input type="reset" name="Alle_löschen" value="Alle löschen">
+            <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
+            <input type="submit" id="B1" name="Bestellen" value="Bestellen">
+        </form>
+HTML;
+
         $this->generatePageFooter();
     }
-    
-
 
     public static function main():void
     {
@@ -130,6 +125,5 @@ class Bestellung extends Page
     }
 }
 
-// This call is starting the creation of the page. 
 Bestellung::main();
-
+?>

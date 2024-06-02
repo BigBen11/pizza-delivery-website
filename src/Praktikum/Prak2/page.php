@@ -9,12 +9,9 @@ abstract class Page
         error_reporting(E_ALL);
 
         $host = "localhost";
-        /********************************************/
-        // This code switches from the the local installation (XAMPP) to the docker installation 
         if (gethostbyname('mariadb') != "mariadb") { 
             $host = "mariadb";
         }
-        /********************************************/
 
         $this->db = new MySQLi($host, "public", "public", "pizzaservice");
 
@@ -22,7 +19,6 @@ abstract class Page
             throw new Exception("Connect failed: " . $this->db->connect_errno);
         }
 
-        // set charset to UTF8
         if (!$this->db->set_charset("utf8")) {
             throw new Exception($this->db->error);
         }
@@ -36,32 +32,27 @@ abstract class Page
     protected function generatePageHeader(string $title = "", string $jsFile = "", bool $autoreload = false):void
     {
         $title = htmlspecialchars($title);
-        //header("Content-type: text/html; charset=UTF-8");
 
-        // TO DO: handle all parameters
-
-            echo <<<EOT
-            <!DOCTYPE html>
-            <html lang="de">
-             <head>
-                <meta charset="UTF-8">
-                <title>$title</title>
-            </head>
-            <body>
-                <header>
-                    <h1>Willkommen beim Pizzaservice!</h1>
-                    <nav>
-                        <ul>
-                            <li><a href="fahrer.php">Fahrer</a></li>
-                            <li><a href="baecker.php"> Bäcker</a></li>
-                            <li><a href="bestellung.php">Bestellungen</a></li>
-                            <li><a href="kunde.php">Kunde</a></li>
-                        </ul>
-                    </nav>
-                </header>
-                
-            EOT;
-
+        echo <<<EOT
+        <!DOCTYPE html>
+        <html lang="de">
+        <head>
+            <meta charset="UTF-8">
+            <title>$title</title>
+        </head>
+        <body>
+            <header>
+                <h1>Willkommen beim Pizzaservice!</h1>
+                <nav>
+                    <ul>
+                        <li><a href="fahrer.php">Fahrer</a></li>
+                        <li><a href="baecker.php">Bäcker</a></li>
+                        <li><a href="bestellung.php">Bestellungen</a></li>
+                        <li><a href="kunde.php">Kunde</a></li>
+                    </ul>
+                </nav>
+            </header>
+        EOT;
     }
 
     protected function generatePageFooter():void
@@ -69,12 +60,12 @@ abstract class Page
         echo <<<EOT
         </body>
         </html>
-        
         EOT;
     }
 
     protected function processReceivedData():void
     {
-
+        // To be overridden in derived classes
     }
 }
+?>

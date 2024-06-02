@@ -16,55 +16,73 @@ class Fahrer extends Page
     protected function processReceivedData():void
     {
         parent::processReceivedData();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            foreach ($_POST['status'] as $orderId => $status) {
+                $query = "UPDATE `orders` SET `status` = ? WHERE `id` = ?";
+                $stmt = $this->db->prepare($query);
+                $stmt->bind_param('si', $status, $orderId);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
     }
 
     protected function getViewData():array
     {
+        $query = "SELECT `orders`.`id`, `orders`.`status`, `customers`.`name` AS customer_name 
+                  FROM `orders` 
+                  JOIN `customers` ON `orders`.`customer_id` = `customers`.`id` 
+                  WHERE `orders`.`status` = 'Fertig'";
+        $result = $this->db->query($query);
+        $orders = [];
 
-       return array();
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+        $result->free();
+
+        return $orders;
     }
 
     protected function generateView():void
-{
-    $data = $this->getViewData();
+    {
+        $data = $this->getViewData();
 
-    $this->generatePageHeader('Fahrer'); 
+        $this->generatePageHeader('Fahrer'); 
 
-    echo <<< HTML
+        echo <<<HTML
         <h1> <b>Fahrer (auslieferbare Bestellungen)</b> </h1>
-        <hr> <!-- später in CSS implementieren! -->
+        <hr>
+        <p>1. Bestellt   2. Im Ofen   3. Fertig   4. Unterwegs</p>
+        <form method="post" action="fahrer.php">
+HTML;
 
-        <p>1.Bestellt   2.Im Ofen   3.Fertig</p>
-        <label>
-            <input type="radio" id="radioGet" checked name="R2" value="get"/>
-            <input type="radio" id="radioGet" checked name="R2" value="get"/>
-            <input type="radio" id="radioGet" checked name="R2" value="get"/>
-            Margherita
-        </label>
+        foreach ($data as $order) {
+            $id = htmlspecialchars($order['id']);
+            $status = htmlspecialchars($order['status']);
+            $customerName = htmlspecialchars($order['customer_name']);
 
-        <br>
+            $checkedFertig = $status == 'Fertig' ? 'checked' : '';
+            $checkedUnterwegs = $status == 'Unterwegs' ? 'checked' : '';
 
-        <label>
-            <input type="radio" id="radioGet" checked name="R2" value="get"/>
-            <input type="radio" id="radioGet" checked name="R2" value="get"/>
-            <input type="radio" id="radioGet" checked name="R2" value="get"/>
-            Salami
-        </label>
+            echo <<<HTML
+            <label>
+                <input type="radio" name="status[$id]" value="Fertig" $checkedFertig/> Fertig
+                <input type="radio" name="status[$id]" value="Unterwegs" $checkedUnterwegs/> Unterwegs
+                Bestellung von $customerName
+            </label>
+            <br>
+HTML;
+        }
 
-        <br>
+        echo <<<HTML
+            <input type="submit" value="Aktualisieren">
+        </form>
+HTML;
 
-        <label>
-            <input type="radio" id="radioGet" checked name="R2" value="get"/>
-            <input type="radio" id="radioGet" checked name="R2" value="get"/>
-            <input type="radio" id="radioGet" checked name="R2" value="get"/>
-            Hawaii
-        </label>
-
-    HTML;
-
-    $this->generatePageFooter();
-}
-
+        $this->generatePageFooter();
+    }
 
     public static function main():void
     {
@@ -79,6 +97,5 @@ class Fahrer extends Page
     }
 }
 
-// This call is starting the creation of the page. 
 Fahrer::main();
-
+?>
