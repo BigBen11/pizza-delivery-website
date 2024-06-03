@@ -20,13 +20,13 @@ class Kunde extends Page
 
     protected function getViewData():array
     {
-        $query = "SELECT `ordering`.`ordering_id`, `article`.`name`, `ordered_article`.`status` 
+        $query = "SELECT `ordering`.`ordering_id`, `article`.`name`, `ordered_article`.`status`, ordering.address
                   FROM `ordering` 
                   JOIN `ordered_article` ON `ordering`.`ordering_id` = `ordered_article`.`ordering_id` 
                   JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
                   WHERE `ordering`.`ordering_id` = ?"; // Kunde wird später per Session bestimmt
         $stmt = $this->db->prepare($query);
-        $customerId = 1; // Beispiel-Kunde, später durch Session ersetzt
+        $customerId = 19; // Beispiel-Kunde, später durch Session ersetzt
         $stmt->bind_param('i', $customerId);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -51,10 +51,11 @@ class Kunde extends Page
         <hr>
 HTML;
 
+        echo 'Adresse: ' . $orders[0]['address']; 
         echo "<ul>";
         foreach ($orders as $order) {
             $pizzaName = htmlspecialchars($order['name']);
-            $status = htmlspecialchars($order['status']);
+            $status = $order['status'];
             echo "<li>" . $pizzaName . ": " . $status . "</li>";
         }
         echo "</ul>";

@@ -40,7 +40,7 @@ class Baecker extends Page
     $query = "SELECT `ordered_article`.`ordered_article_id`, `article`.`name`, `ordered_article`.`status` 
               FROM `ordered_article` 
               JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id`
-              WHERE `ordered_article`.`status` != 3"; // Nur Pizzen abrufen, die nicht "Fertig" sind
+              WHERE `ordered_article`.`status` < 3"; // Nur Pizzen abrufen, die nicht "Fertig" sind
 
     $result = $this->db->query($query);
     $pizzas = [];
@@ -58,6 +58,7 @@ class Baecker extends Page
     {
         $data = $this->getViewData();
         $statusMap = [
+            0 => 'NaN', 
             1 => 'Bestellt',
             2 => 'Im Ofen',
             3 => 'Fertig',
@@ -76,9 +77,9 @@ HTML;
         foreach ($data as $pizza) {
             $id = htmlspecialchars($pizza['ordered_article_id']);
             $name = htmlspecialchars($pizza['name']);
-            $status = htmlspecialchars($statusMap[$pizza['status']]);
+            $status = $statusMap[$pizza['status']];
 
-            $checkedBestellt = $status == 'Bestellt' ? 'checked' : '';
+            $checkedBestellt = $status == 'Bestellt' ? 'checked' : ''; // if status is bestellt then checked else none
             $checkedImOfen = $status == 'Im Ofen' ? 'checked' : '';
             $checkedFertig = $status == 'Fertig' ? 'checked' : '';
             
