@@ -31,23 +31,24 @@ class Fahrer extends Page
     }
 
     protected function getViewData():array
-{
-    $query = "SELECT `ordered_article`.`ordering_id`, `ordered_article`.`status`, `ordering`.`address` AS address, GROUP_CONCAT(`article`.`name` SEPARATOR ', ') AS pizza_types
-              FROM `ordered_article` 
-              JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
-              JOIN `ordering` ON `ordered_article`.`ordering_id` = `ordering`.`ordering_id`
-              WHERE `ordered_article`.`status` = 3 OR `ordered_article`.`status` = 4
-              GROUP BY `ordered_article`.`ordering_id`, `ordering`.`address`, `ordered_article`.`status`";
-    $result = $this->db->query($query);
-    $orders = [];
-
-    while ($row = $result->fetch_assoc()) {
-        $orders[] = $row;
+    {
+        $query = "SELECT `ordered_article`.`ordering_id`, `ordered_article`.`status`, `ordering`.`address` AS address, GROUP_CONCAT(`article`.`name` SEPARATOR ', ') AS pizza_types, SUM(`article`.`price`) AS total_price
+                  FROM `ordered_article` 
+                  JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
+                  JOIN `ordering` ON `ordered_article`.`ordering_id` = `ordering`.`ordering_id`
+                  WHERE `ordered_article`.`status` = 3 OR `ordered_article`.`status` = 4
+                  GROUP BY `ordered_article`.`ordering_id`, `ordering`.`address`, `ordered_article`.`status`";
+        $result = $this->db->query($query);
+        $orders = [];
+    
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+        $result->free();
+    
+        return $orders;
     }
-    $result->free();
-
-    return $orders;
-}
+    
 
 
     
@@ -72,6 +73,7 @@ HTML;
             $id = $order['ordering_id'];
             $address = $order ['address'];
             $pizzaTypes = $order['pizza_types'];
+            $totalPrice = $order['total_price'];
             $status = $order['status'];
             
             $checkedFertig = $status == '3' ? 'checked' : '';
@@ -84,7 +86,7 @@ HTML;
                     <input type="radio" name="status[$id]" value="4" $checkedUnterwegs/> Unterwegs
                     <input type="radio" name="status[$id]" value="5" $checkedGeliefert/> Geliefert
 
-                    Bestellung von $address: $pizzaTypes
+                    Bestellung von $address: $pizzaTypes, $totalPrice EUR
                 </label>
                 <br>
             HTML;
