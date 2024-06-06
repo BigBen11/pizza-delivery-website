@@ -24,10 +24,15 @@ class Kunde extends Page
                   FROM `ordering` 
                   JOIN `ordered_article` ON `ordering`.`ordering_id` = `ordered_article`.`ordering_id` 
                   JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
-                  WHERE `ordering`.`ordering_id` = ?"; // Kunde wird später per Session bestimmt
+                  ";
+                  //WHERE `ordering`.`ordering_id` = ?"; // Kunde wird später per Session bestimmt
+
+
         $stmt = $this->db->prepare($query);
-        $customerId = 19; // Beispiel-Kunde, später durch Session ersetzt
-        $stmt->bind_param('i', $customerId);
+
+        //$customerId = 19; // Beispiel-Kunde, später durch Session ersetzt
+        //$stmt->bind_param('i', $customerId);
+        
         $stmt->execute();
         $result = $stmt->get_result();
         $orders = [];

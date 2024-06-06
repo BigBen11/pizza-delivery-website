@@ -17,16 +17,15 @@ class Baecker extends Page
     {
         parent::processReceivedData();
 
-        //if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $statusMap = [
-                'Bestellt' => 1,
-                'Im Ofen' => 2,
-                'Fertig' => 3,
-            
-            ];
+            //$statusMap = [
+            //    'Bestellt' => 1,
+            //    'Im Ofen' => 2,
+            //    'Fertig' => 3,
+            //
+            //];
             if(isset($_POST['status'])){
                 foreach ($_POST['status'] as $orderedArticleId => $status) {
-                    $status = $statusMap[$status];
+                    //$status = $statusMap[$status];
                     $query = "UPDATE `ordered_article` SET `status` = ? WHERE `ordered_article_id` = ?";
                     $stmt = $this->db->prepare($query);
                     $stmt->bind_param('ii', $status, $orderedArticleId);
@@ -34,7 +33,6 @@ class Baecker extends Page
                     $stmt->close();
                 }
             }
-    // }
     }
 
     protected function getViewData():array
@@ -59,13 +57,13 @@ class Baecker extends Page
     protected function generateView():void
     {
         $data = $this->getViewData();
-        $statusMap = [
-            0 => 'NaN', 
-            1 => 'Bestellt',
-            2 => 'Im Ofen',
-            3 => 'Fertig',
-            
-        ];
+        //$statusMap = [
+        //    0 => 'NaN', 
+        //    1 => 'Bestellt',
+        //    2 => 'Im Ofen',
+        //    3 => 'Fertig',
+        //    
+        //];
 
         $this->generatePageHeader('Bäcker', '', true); 
 
@@ -84,18 +82,19 @@ HTML;
         foreach ($data as $pizza) {
             $id = htmlspecialchars($pizza['ordered_article_id']);
             $name = htmlspecialchars($pizza['name']);
-            $status = $statusMap[$pizza['status']];
+            //$status = $statusMap[$pizza['status']];
+            $status = $pizza['status'];
 
-            $checkedBestellt = $status == 'Bestellt' ? 'checked' : ''; // if status is bestellt then checked else none
-            $checkedImOfen = $status == 'Im Ofen' ? 'checked' : '';
-            $checkedFertig = $status == 'Fertig' ? 'checked' : '';
+            $checkedBestellt = $status == 1 ? 'checked' : ''; // if status is bestellt then checked else none
+            $checkedImOfen = $status == 2 ? 'checked' : '';
+            $checkedFertig = $status == 3 ? 'checked' : '';
             
 
             echo <<<HTML
             <label>
-                <input type="radio" name="status[$id]" value="Bestellt" $checkedBestellt/> Bestellt
-                <input type="radio" name="status[$id]" value="Im Ofen" $checkedImOfen/> Im Ofen
-                <input type="radio" name="status[$id]" value="Fertig" $checkedFertig/> Fertig
+                <input type="radio" name="status[$id]" value="1" $checkedBestellt/> Bestellt
+                <input type="radio" name="status[$id]" value="2" $checkedImOfen/> Im Ofen
+                <input type="radio" name="status[$id]" value="3" $checkedFertig/> Fertig
                
                 $name
             </label>

@@ -17,7 +17,7 @@ class Fahrer extends Page
     {
         parent::processReceivedData();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['status'])){
             foreach ($_POST['status'] as $orderId => $status) {
                 $query = "UPDATE `ordered_article` SET `status` = ? WHERE `ordering_id` = ?";
                 $stmt = $this->db->prepare($query);
