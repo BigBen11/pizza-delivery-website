@@ -40,7 +40,7 @@ class Baecker extends Page
     $query = "SELECT `ordered_article`.`ordered_article_id`, `article`.`name`, `ordered_article`.`status` 
               FROM `ordered_article` 
               JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id`
-              WHERE `ordered_article`.`status` < 3"; // Nur Pizzen abrufen, die nicht "Fertig" sind
+              WHERE `ordered_article`.`status` = 1 OR `ordered_article`.`status` = 2 "; // Nur Pizzen abrufen, die nicht "Fertig" sind
 
     $result = $this->db->query($query);
     $pizzas = [];
