@@ -31,25 +31,25 @@ class Fahrer extends Page
     }
 
     protected function getViewData():array
-    {
-        // , GROUP_CONCAT(`article`.`name` SEPARATOR ', ')
+{
+    $query = "SELECT `ordered_article`.`ordering_id`, `ordered_article`.`status`, `ordering`.`address` AS address, GROUP_CONCAT(`article`.`name` SEPARATOR ', ') AS pizza_types
+              FROM `ordered_article` 
+              JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
+              JOIN `ordering` ON `ordered_article`.`ordering_id` = `ordering`.`ordering_id`
+              WHERE `ordered_article`.`status` = 3 OR `ordered_article`.`status` = 4
+              GROUP BY `ordered_article`.`ordering_id`, `ordering`.`address`, `ordered_article`.`status`";
+    $result = $this->db->query($query);
+    $orders = [];
 
-        $query = "SELECT `ordered_article`.`ordering_id`, `ordered_article`.`status`, `ordering`.`address` AS pizza_types
-                  FROM `ordered_article` 
-                  JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
-                  JOIN `ordering` ON `ordered_article`.`ordering_id` = `ordering`.`ordering_id`
-                  WHERE `ordered_article`.`status` = 3 OR `ordered_article`.`status` = 4
-                  GROUP BY `ordered_article`.`ordering_id`, `ordering`.`address`, `ordered_article`.`status`";
-        $result = $this->db->query($query);
-        $orders = [];
-    
-        while ($row = $result->fetch_assoc()) {
-            $orders[] = $row;
-        }
-        $result->free();
-    
-        return $orders;
+    while ($row = $result->fetch_assoc()) {
+        $orders[] = $row;
     }
+    $result->free();
+
+    return $orders;
+}
+
+
     
     protected function generateView():void {
 
@@ -70,7 +70,7 @@ HTML;
     else {
         foreach ($data as $order) {
             $id = $order['ordering_id'];
-            $address = $order['address'];
+            $address = $order ['address'];
             $pizzaTypes = $order['pizza_types'];
             $status = $order['status'];
             
