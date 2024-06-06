@@ -63,6 +63,10 @@ class Fahrer extends Page
     <form method="post" action="fahrer.php">
 HTML;
 
+    if (empty($data)) {
+        echo "<p>Es gibt derzeit keine Pizzen zu bearbeiten. Machen Sie eine Pause! 😊</p>";
+    }
+    else {
     foreach ($data as $order) {
         $id = htmlspecialchars($order['ordering_id']);
         $address = htmlspecialchars($order['address']);
@@ -82,6 +86,7 @@ HTML;
         <br>
 HTML;
     }
+}
 
     echo <<<HTML
         <input type="submit" value="Aktualisieren">
