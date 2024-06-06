@@ -16,16 +16,9 @@ class Baecker extends Page
     protected function processReceivedData():void
     {
         parent::processReceivedData();
-
-            //$statusMap = [
-            //    'Bestellt' => 1,
-            //    'Im Ofen' => 2,
-            //    'Fertig' => 3,
-            //
-            //];
+        
             if(isset($_POST['status'])){
                 foreach ($_POST['status'] as $orderedArticleId => $status) {
-                    //$status = $statusMap[$status];
                     $query = "UPDATE `ordered_article` SET `status` = ? WHERE `ordered_article_id` = ?";
                     $stmt = $this->db->prepare($query);
                     $stmt->bind_param('ii', $status, $orderedArticleId);
@@ -57,13 +50,6 @@ class Baecker extends Page
     protected function generateView():void
     {
         $data = $this->getViewData();
-        //$statusMap = [
-        //    0 => 'NaN', 
-        //    1 => 'Bestellt',
-        //    2 => 'Im Ofen',
-        //    3 => 'Fertig',
-        //    
-        //];
 
         $this->generatePageHeader('Bäcker', '', true); 
 
@@ -82,7 +68,6 @@ HTML;
         foreach ($data as $pizza) {
             $id = htmlspecialchars($pizza['ordered_article_id']);
             $name = htmlspecialchars($pizza['name']);
-            //$status = $statusMap[$pizza['status']];
             $status = $pizza['status'];
 
             $checkedBestellt = $status == 1 ? 'checked' : ''; // if status is bestellt then checked else none

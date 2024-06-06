@@ -21,7 +21,7 @@ class Fahrer extends Page
             foreach ($_POST['status'] as $orderId => $status) {
                 $query = "UPDATE `ordered_article` SET `status` = ? WHERE `ordering_id` = ?";
                 $stmt = $this->db->prepare($query);
-                $stmt->bind_param('si', $status, $orderId);
+                $stmt->bind_param('ii', $status, $orderId);
                 $stmt->execute();
                 $stmt->close();
             }
@@ -30,12 +30,14 @@ class Fahrer extends Page
 
     protected function getViewData():array
     {
-        $query = "SELECT `ordered_article`.`ordering_id`, `ordering`.`address`, GROUP_CONCAT(`article`.`name` SEPARATOR ', ') AS pizza_types
+        // , GROUP_CONCAT(`article`.`name` SEPARATOR ', ')
+
+        $query = "SELECT `ordered_article`.`ordering_id`, `ordered_article`.`status`, `ordering`.`address` AS pizza_types
                   FROM `ordered_article` 
                   JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
                   JOIN `ordering` ON `ordered_article`.`ordering_id` = `ordering`.`ordering_id`
-                  WHERE `ordered_article`.`status` = 3
-                  GROUP BY `ordered_article`.`ordering_id`, `ordering`.`address`";
+                  WHERE `ordered_article`.`status` = 3 OR `ordered_article`.`status` = 4
+                  GROUP BY `ordered_article`.`ordering_id`, `ordering`.`address`, `ordered_article`.`status`";
         $result = $this->db->query($query);
         $orders = [];
     
@@ -47,11 +49,8 @@ class Fahrer extends Page
         return $orders;
     }
     
+    protected function generateView():void {
 
-
-
-    protected function generateView():void
-{
     $data = $this->getViewData();
 
     $this->generatePageHeader('Fahrer','', true); 
@@ -67,24 +66,26 @@ HTML;
         echo "<p>Es gibt derzeit keine Pizzen zu bearbeiten. Machen Sie eine Pause! 😊</p>";
     }
     else {
-    foreach ($data as $order) {
-        $id = htmlspecialchars($order['ordering_id']);
-        $address = htmlspecialchars($order['address']);
-        $pizzaTypes = htmlspecialchars($order['pizza_types']);
-        $status = array_key_exists('status', $order) ? htmlspecialchars($order['status']) : '';
-        
-        $checkedFertig = $status == '3' ? 'checked' : '';
-        $checkedUnterwegs = $status == '4' ? 'checked' : '';
+        foreach ($data as $order) {
+            $id = $order['ordering_id'];
+            $address = $order['address'];
+            $pizzaTypes = $order['pizza_types'];
+            $status = $order['status'];
+            
+            $checkedFertig = $status == '3' ? 'checked' : '';
+            $checkedUnterwegs = $status == '4' ? 'checked' : '';
+            $checkedGeliefert = $status == '5' ? 'checked' : '';
 
-        echo <<<HTML
-        <label>
-            <input type="radio" name="status[$id]" value="5" $checkedFertig/> Geliefert
-            <input type="radio" name="status[$id]" value="3" $checkedFertig/> Fertig
-            <input type="radio" name="status[$id]" value="4" $checkedUnterwegs/> Unterwegs
-            Bestellung von $address: $pizzaTypes
-        </label>
-        <br>
-HTML;
+            echo <<<HTML
+                <label>
+                    <input type="radio" name="status[$id]" value="3" $checkedFertig/> Fertig
+                    <input type="radio" name="status[$id]" value="4" $checkedUnterwegs/> Unterwegs
+                    <input type="radio" name="status[$id]" value="5" $checkedGeliefert/> Geliefert
+
+                    Bestellung von $address: $pizzaTypes
+                </label>
+                <br>
+            HTML;
     }
 }
 

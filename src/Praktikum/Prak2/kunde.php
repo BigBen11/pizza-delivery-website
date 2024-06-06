@@ -56,7 +56,10 @@ class Kunde extends Page
         <hr>
 HTML;
 
-        echo 'Adresse: ' . $orders[0]['address']; 
+        if (empty($data)) {
+            echo "<p>Du hast derzeit keine Bestellungen, mache jetzt eine! 😊</p>";
+        }
+
         echo "<ul>";
         foreach ($orders as $order) {
             $pizzaName = htmlspecialchars($order['name']);
