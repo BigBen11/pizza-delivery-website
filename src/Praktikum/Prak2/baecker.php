@@ -17,22 +17,24 @@ class Baecker extends Page
     {
         parent::processReceivedData();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $statusMap = [
                 'Bestellt' => 1,
                 'Im Ofen' => 2,
                 'Fertig' => 3,
             
             ];
-            foreach ($_POST['status'] as $orderedArticleId => $status) {
-                $status = $statusMap[$status];
-                $query = "UPDATE `ordered_article` SET `status` = ? WHERE `ordered_article_id` = ?";
-                $stmt = $this->db->prepare($query);
-                $stmt->bind_param('ii', $status, $orderedArticleId);
-                $stmt->execute();
-                $stmt->close();
+            if(isset($_POST['status'])){
+                foreach ($_POST['status'] as $orderedArticleId => $status) {
+                    $status = $statusMap[$status];
+                    $query = "UPDATE `ordered_article` SET `status` = ? WHERE `ordered_article_id` = ?";
+                    $stmt = $this->db->prepare($query);
+                    $stmt->bind_param('ii', $status, $orderedArticleId);
+                    $stmt->execute();
+                    $stmt->close();
+                }
             }
-        }
+    // }
     }
 
     protected function getViewData():array
