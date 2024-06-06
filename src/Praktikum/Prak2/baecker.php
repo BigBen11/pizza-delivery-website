@@ -76,6 +76,11 @@ class Baecker extends Page
         <form method="post" action="baecker.php">
 HTML;
 
+
+        if (empty($data)) {
+            echo "<p>Es gibt derzeit keine Pizzen zu bearbeiten. Machen Sie eine Pause! 😊</p>";
+        }
+        else {
         foreach ($data as $pizza) {
             $id = htmlspecialchars($pizza['ordered_article_id']);
             $name = htmlspecialchars($pizza['name']);
@@ -96,7 +101,9 @@ HTML;
             </label>
             <br>
 HTML;
+            }
         }
+    
 
         echo <<<HTML
             <input type="submit" value="Aktualisieren">
@@ -104,7 +111,8 @@ HTML;
 HTML;
 
         $this->generatePageFooter();
-    }
+    
+}
 
     public static function main():void
     {

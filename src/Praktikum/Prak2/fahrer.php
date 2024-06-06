@@ -74,9 +74,9 @@ HTML;
 
         echo <<<HTML
         <label>
-            <input type="radio" name="status[$id]" value="2" $checkedFertig/> Geliefert
-            <input type="radio" name="status[$id]" value="1" $checkedFertig/> Fertig
-            <input type="radio" name="status[$id]" value="0" $checkedUnterwegs/> Unterwegs
+            <input type="radio" name="status[$id]" value="5" $checkedFertig/> Geliefert
+            <input type="radio" name="status[$id]" value="3" $checkedFertig/> Fertig
+            <input type="radio" name="status[$id]" value="4" $checkedUnterwegs/> Unterwegs
             Bestellung von $address: $pizzaTypes
         </label>
         <br>
