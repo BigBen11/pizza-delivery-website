@@ -25,6 +25,8 @@ class Fahrer extends Page
                 $stmt->execute();
                 $stmt->close();
             }
+            header('Location: fahrer.php');
+            die;
         }
     }
 

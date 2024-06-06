@@ -35,6 +35,8 @@ class Bestellung extends Page
                 $stmt->execute();
                 $stmt->close();
             }
+            header('Location: bestellung.php');
+            die;
         }
     }
 

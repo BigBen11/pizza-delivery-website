@@ -25,6 +25,8 @@ class Baecker extends Page
                     $stmt->execute();
                     $stmt->close();
                 }
+                header('Location: baecker.php');
+                die;
             }
     }
 
