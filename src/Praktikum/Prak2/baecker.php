@@ -67,7 +67,7 @@ class Baecker extends Page
             
         ];
 
-        $this->generatePageHeader('Bäcker'); 
+        $this->generatePageHeader('Bäcker', '', true); 
 
         echo <<<HTML
         <h1> <b>Pizzabäcker (bestellte Pizzen)</b> </h1>

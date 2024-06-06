@@ -54,12 +54,12 @@ class Fahrer extends Page
 {
     $data = $this->getViewData();
 
-    $this->generatePageHeader('Fahrer'); 
+    $this->generatePageHeader('Fahrer','', true); 
 
     echo <<<HTML
     <h1> <b>Fahrer (auslieferbare Bestellungen)</b> </h1>
     <hr>
-    <p>1. Bestellt   2. Im Ofen   3. Fertig   4. Unterwegs</p>
+   
     <form method="post" action="fahrer.php">
 HTML;
 

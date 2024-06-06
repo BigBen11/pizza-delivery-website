@@ -32,6 +32,7 @@ abstract class Page
     protected function generatePageHeader(string $title = "", string $jsFile = "", bool $autoreload = false):void
     {
         $title = htmlspecialchars($title);
+        $refresh = $autoreload ? '<meta http-equiv="refresh" content="10">' : ''; // Seite alle 10 Sekunden aktualisieren, wenn $autoreload wahr ist
 
         echo <<<EOT
         <!DOCTYPE html>
@@ -51,6 +52,7 @@ abstract class Page
                         <li><a href="kunde.php">Kunde</a></li>
                     </ul>
                 </nav>
+            $refresh   
             </header>
         EOT;
     }
