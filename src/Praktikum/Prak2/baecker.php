@@ -16,56 +16,89 @@ class Baecker extends Page
     protected function processReceivedData():void
     {
         parent::processReceivedData();
+
+            if(isset($_POST['status'])){
+                foreach ($_POST['status'] as $orderedArticleId => $status) {
+                    $query = "UPDATE `ordered_article` SET `status` = ? WHERE `ordered_article_id` = ?";
+                    $stmt = $this->db->prepare($query);
+                    $stmt->bind_param('ii', $status, $orderedArticleId);
+                    $stmt->execute();
+                    $stmt->close();
+                }
+                header('Location: baecker.php');
+                die;
+            }
     }
 
     protected function getViewData():array
-    {
-
-       return array();
-    }
-
-    protected function generateView():void
 {
-    $data = $this->getViewData();
+    $query = "SELECT `ordered_article`.`ordered_article_id`, `article`.`name`, `ordered_article`.`status` 
+              FROM `ordered_article` 
+              JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id`
+              WHERE `ordered_article`.`status` = 1 OR `ordered_article`.`status` = 2  OR `ordered_article`.`status` = 3"; // Nur Pizzen abrufen, die nicht "Fertig" sind
 
-    $this->generatePageHeader('Bäcker'); 
+    $result = $this->db->query($query);
+    $pizzas = [];
 
-    echo <<< HTML
-        <h1> <b>Pizzabäcker (bestellte Pizzen)</b> </h1>
-        <hr> <!-- später in CSS implementieren! -->
+    while ($row = $result->fetch_assoc()) {
+        $pizzas[] = $row;
+    }
+    $result->free();
 
-        <p>1.Bestellt   2.Im Ofen   3.Fertig</p>
-        <label>
-            <input type="radio" id="bestellt_m" checked name="margherita" value="get"/>
-            <input type="radio" id="im_ofen_m" checked name="margherita" value="get"/>
-            <input type="radio" id="fertig_m" checked name="margherita" value="get"/>
-            Margherita
-        </label>
-
-        <br>
-
-        <label>
-            <input type="radio" id="bestellt_s" checked name="salami" value="get"/>
-            <input type="radio" id="im_ofen_s" checked name="salami" value="get"/>
-            <input type="radio" id="fertig_s" checked name="salami" value="get"/>
-            Salami
-        </label>
-
-        <br>
-
-        
-        <label>
-            <input type="radio" id="bestellt_h" checked name="hawaii" value="get"/>
-            <input type="radio" id="im_ofen_h" checked name="hawaii" value="get"/>
-            <input type="radio" id="fertig_h" checked name="hawaii" value="get"/>
-            Hawaii
-        </label>
-    HTML;
-
-
-    $this->generatePageFooter();
+    return $pizzas;
 }
 
+
+    protected function generateView():void
+    {
+        $data = $this->getViewData();
+
+        $this->generatePageHeader('Bäcker', '', true); 
+
+        echo <<<HTML
+        <h1> <b>Pizzabäcker (bestellte Pizzen)</b> </h1>
+        <hr>
+        
+        <form method="post" action="baecker.php">
+HTML;
+
+
+        if (empty($data)) {
+            echo "<p>Es gibt derzeit keine Pizzen zu bearbeiten. Machen Sie eine Pause! 😊</p>";
+        }
+        else {
+        foreach ($data as $pizza) {
+            $id = htmlspecialchars($pizza['ordered_article_id']);
+            $name = htmlspecialchars($pizza['name']);
+            $status = $pizza['status'];
+
+            $checkedBestellt = $status == 1 ? 'checked' : ''; // if status is bestellt then checked else none
+            $checkedImOfen = $status == 2 ? 'checked' : '';
+            $checkedFertig = $status == 3 ? 'checked' : '';
+            
+
+            echo <<<HTML
+            <label>
+                <input type="radio" name="status[$id]" value="1" $checkedBestellt/> Bestellt
+                <input type="radio" name="status[$id]" value="2" $checkedImOfen/> Im Ofen
+                <input type="radio" name="status[$id]" value="3" $checkedFertig/> Fertig
+               
+                $name
+            </label>
+            <br>
+HTML;
+            }
+        }
+    
+
+        echo <<<HTML
+            <input type="submit" value="Aktualisieren">
+        </form>
+HTML;
+
+        $this->generatePageFooter();
+    
+}
 
     public static function main():void
     {
@@ -80,6 +113,5 @@ class Baecker extends Page
     }
 }
 
-// This call is starting the creation of the page. 
 Baecker::main();
-
+?>

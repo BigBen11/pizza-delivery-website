@@ -15,96 +15,104 @@ class Bestellung extends Page
 
     protected function processReceivedData():void
     {
-
         parent::processReceivedData();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $pizzaIds = $_POST['Pizza_type'];
+            $address = $_POST['Adresse'];
+
+            $query = "INSERT INTO `ordering` (`address`) VALUES (?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('s', $address);
+            $stmt->execute();
+            $orderId = $stmt->insert_id;
+            $stmt->close();
+
+            foreach ($pizzaIds as $pizzaId) {
+                $query = "INSERT INTO `ordered_article` (`ordering_id`, `article_id`, `status`) VALUES (?, ?, 1)";
+                $stmt = $this->db->prepare($query);
+                $stmt->bind_param('ii', $orderId, $pizzaId);
+                $stmt->execute();
+                $stmt->close();
+            }
+            header('Location: bestellung.php');
+            die;
+        }
     }
 
     protected function getViewData():array
     {
-        
-        /*$sql = "SELECT * FROM ordering";
-        $recordset = $this->database->query($sql);
-        $recordset = $this->database->query($sql);
-        if (!$recordset) {
-            throw new Exception("Abfrage fehlgeschlagen: " . $this->database->error);
+        $query = "SELECT * FROM `article` ORDER BY `article_id` ASC";
+        $result = $this->db->query($query);
+        $pizzas = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $pizzas[] = $row;
         }
+        $result->free();
 
-        // read selected records into result array
-        $record = $recordset->fetch_assoc();
-
-
-        var_dump($record);
-
-        $recordset->free();
-        */
-
-
-       return array();
+        return $pizzas;
     }
 
     protected function generateView():void
-{
-    $data = $this->getViewData();
+    {
+        $pizzas = $this->getViewData();
 
-    $this->generatePageHeader('Bestellung'); 
+        $this->generatePageHeader('Bestellung'); 
 
-    echo <<<HTML
+        echo <<<HTML
         <h1> <b>Bestellung</b> </h1>
-        
-        <hr> <!-- später in CSS implementieren! -->
-
+        <hr>
         <h2> <b>Speisekarte</b> </h2>
-        
-        <div>
-            <img src="pizza_foto.jpg" alt="Margherita" width="90" height="100">
-            <div> Margherita </div>
-            <div> 9.00 € </div>
-        </div>
+HTML;
 
-        <div>
-            <img src="pizza_foto.jpg" alt="Salami" width="90" height="100">
-            <div> Salami </div>
-            <div> 12.50 € </div>
-        </div>
+        foreach ($pizzas as $pizza) {
+            $id = htmlspecialchars($pizza['article_id']);
+            $name = htmlspecialchars($pizza['name']);
+            $picture = htmlspecialchars($pizza['picture']);
+            $price = htmlspecialchars($pizza['price']);
 
-        <div>
-            <img src="pizza_foto.jpg" alt="Hawaii" width="90" height="100">
-            <div> Hawaii </div>
-            <div> 13.00 € </div>
-        </div>
+            echo <<<HTML
+            <div>
+                <img src="$picture" alt="$name" width="90" height="100">
+                <div> $name </div>
+                <div> $price € </div>
+            </div>
+HTML;
+        }
 
-        <br> <!-- später in CSS implementieren! -->
-
+        echo <<<HTML
+        <br>
         <h2> <b>Warenkorb</b> </h2>
-
-        <form id="myForm" accept-charset="UTF-8" action="https://echo.fbi.h-da.de/" method="post">
-
+        <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
             <fieldset>
                 <legend>Bitte wählen Sie aus</legend>
-
                 <select name="Pizza_type[]" id="Pizza_type" size="5" multiple>
-                    <option value="1"> Margherita </option>
-                    <option value="2"> Salami </option>
-                    <option value="3"> Hawaii </option>
+HTML;
+
+        foreach ($pizzas as $pizza) {
+            $id = htmlspecialchars($pizza['article_id']);
+            $name = htmlspecialchars($pizza['name']);
+
+            echo <<<HTML
+                    <option value="$id"> $name </option>
+HTML;
+        }
+
+        echo <<<HTML
                 </select>
             </fieldset>
-
-            <br> <!-- später in CSS implementieren! -->
-
-            <input type="text" name="Adresse" placeholder="Ihre Adresse">
-
-            <br> <!-- später in CSS implementieren! -->
-            <br> <!-- später in CSS implementieren! -->
-
+            <br>
+            <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
+            <br><br>
             <input type="reset" name="Alle_löschen" value="Alle löschen">
             <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
             <input type="submit" id="B1" name="Bestellen" value="Bestellen">
         </form>
-    HTML;
+HTML;
 
-    $this->generatePageFooter();
-}
-
+        $this->generatePageFooter();
+    }
 
     public static function main():void
     {
@@ -119,6 +127,5 @@ class Bestellung extends Page
     }
 }
 
-// This call is starting the creation of the page. 
 Bestellung::main();
-
+?>

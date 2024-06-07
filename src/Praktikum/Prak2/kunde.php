@@ -20,40 +20,78 @@ class Kunde extends Page
 
     protected function getViewData():array
     {
-        $pizza_states["Margherita"] = "Bestellt";
-        $pizza_states["Salami"] = "Bestellt";
-        $pizza_states["Hawaii"] = "Im Ofen";
+        $query = "SELECT `ordering`.`ordering_id`, `article`.`name`, `ordered_article`.`status`, ordering.address
+                  FROM `ordering` 
+                  JOIN `ordered_article` ON `ordering`.`ordering_id` = `ordered_article`.`ordering_id` 
+                  JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
+                  ";
+                  //WHERE `ordering`.`ordering_id` = ?"; // Kunde wird später per Session bestimmt
 
-       return $pizza_states;
+
+        $stmt = $this->db->prepare($query);
+
+        //$customerId = 19; // Beispiel-Kunde, später durch Session ersetzt
+        //$stmt->bind_param('i', $customerId);
+        
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $orders = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+        $stmt->close();
+
+        return $orders;
     }
 
-    protected function generateView():void {
-
-        $pizza_states = $this->getViewData();
+    protected function generateView():void
+    {
+        $orders = $this->getViewData();
 
         $this->generatePageHeader('Kunde'); 
 
-        echo <<< HTML
-            <h1> <b>Kunde (Lieferstatus)</b> </h1>
-            <hr> <!-- später in CSS implementieren! -->
-        HTML;
+        echo <<<HTML
+        <h1> <b>Kunde (Lieferstatus)</b> </h1>
+        <hr>
+HTML;
 
+        if (empty($orders)) {
+            echo "<p>Du hast derzeit keine Bestellungen, mache jetzt eine! 😊</p>";
+        }
+        else {
         echo "<ul>";
-        foreach ($pizza_states as $pizza => $state){
-            echo "<li>" . $pizza . ": " . $state . "</li>";
-        } 
+        foreach ($orders as $order) {
+            $pizzaName = htmlspecialchars($order['name']);
+            $status = $order['status'];
+            if($status == 1)
+                $status = "Bestellt";
+            
+            else if($status == 2){
+                $status = "Im Ofen";
+            }
+            else if($status == 3){
+                $status = "Fertig";
+            }
+            else if($status == 4){
+                $status = "Unterwegs";
+            }
+            else if($status == 5){
+                $status = "Geliefert";
+            }
+            echo "<li>" . $pizzaName . ": " . $status . "</li>";
+        }
         echo "</ul>";
+    }
 
-        echo <<< HTML
-            <a href="./bestellung.php">
+        echo <<<HTML
+        <a href="./bestellung.php">
             <button>Neue Bestellung</button>
-            </a>
-
-        HTML;
+        </a>
+HTML;
 
         $this->generatePageFooter();
     }
-
 
     public static function main():void
     {
@@ -68,6 +106,5 @@ class Kunde extends Page
     }
 }
 
-// This call is starting the creation of the page. 
 Kunde::main();
-
+?>
