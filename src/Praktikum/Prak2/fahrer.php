@@ -80,16 +80,21 @@ HTML;
             $checkedUnterwegs = $status == '4' ? 'checked' : '';
             $checkedGeliefert = $status == '5' ? 'checked' : '';
 
+
+            $gerundeteTotalPrice = number_format((float)$totalPrice, 2);
+
             echo <<<HTML
                 <label>
                     <input type="radio" name="status[$id]" value="3" $checkedFertig/> Fertig
                     <input type="radio" name="status[$id]" value="4" $checkedUnterwegs/> Unterwegs
                     <input type="radio" name="status[$id]" value="5" $checkedGeliefert/> Geliefert
 
-                    Bestellung von $address: $pizzaTypes, $totalPrice EUR
+                    <p> Bestellung von $address: $pizzaTypes, $gerundeteTotalPrice EUR </p>
                 </label>
                 <br>
             HTML;
+
+           
     }
 }
 
