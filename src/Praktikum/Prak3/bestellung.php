@@ -15,7 +15,7 @@ class Bestellung extends Page
         parent::__destruct();
     }
 
-    protected function processReceivedData():void
+    protected function processReceivedData(): void
     {
         parent::processReceivedData();
 
@@ -23,6 +23,7 @@ class Bestellung extends Page
             $pizzaIds = $_POST['Pizza_type'];
             $address = $_POST['Adresse'];
 
+            // Prepared Statement für die Bestellung
             $query = "INSERT INTO `ordering` (`address`) VALUES (?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('s', $address);
@@ -30,8 +31,10 @@ class Bestellung extends Page
             $orderingId = $stmt->insert_id;
             $stmt->close();
 
+            // Speichern der Bestellungs-ID in der Session
             $_SESSION['orderingId'] = $orderingId;
 
+            // Einfügen der bestellten Pizzen
             foreach ($pizzaIds as $pizzaId) {
                 $query = "INSERT INTO `ordered_article` (`ordering_id`, `article_id`, `status`) VALUES (?, ?, 1)";
                 $stmt = $this->db->prepare($query);
@@ -39,12 +42,14 @@ class Bestellung extends Page
                 $stmt->execute();
                 $stmt->close();
             }
+
+            // Weiterleitung zur Bestellseite
             header('Location: bestellung.php');
             die;
         }
     }
 
-    protected function getViewData():array
+    protected function getViewData(): array
     {
         $query = "SELECT * FROM `article` ORDER BY `article_id` ASC";
         $result = $this->db->query($query);
@@ -58,11 +63,10 @@ class Bestellung extends Page
         return $pizzas;
     }
 
-    protected function generateView():void
+    protected function generateView(): void
     {
         $pizzas = $this->getViewData();
-
-        $this->generatePageHeader('Bestellung'); 
+        $this->generatePageHeader('Bestellung');
 
         echo <<<HTML
         <h1> <b>Bestellung</b> </h1>
@@ -118,7 +122,7 @@ HTML;
         $this->generatePageFooter();
     }
 
-    public static function main():void
+    public static function main(): void
     {
         try {
             $page = new Bestellung();

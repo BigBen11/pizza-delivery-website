@@ -13,11 +13,11 @@ class Fahrer extends Page
         parent::__destruct();
     }
 
-    protected function processReceivedData():void
+    protected function processReceivedData(): void
     {
         parent::processReceivedData();
 
-        if (isset($_POST['status'])){
+        if (isset($_POST['status'])) {
             foreach ($_POST['status'] as $orderId => $status) {
                 $query = "UPDATE `ordered_article` SET `status` = ? WHERE `ordering_id` = ?";
                 $stmt = $this->db->prepare($query);
@@ -30,7 +30,7 @@ class Fahrer extends Page
         }
     }
 
-    protected function getViewData():array
+    protected function getViewData(): array
     {
         $query = "SELECT `ordered_article`.`ordering_id`, `ordered_article`.`status`, `ordering`.`address` AS address, GROUP_CONCAT(`article`.`name` SEPARATOR ', ') AS pizza_types, SUM(`article`.`price`) AS total_price
                   FROM `ordered_article` 
@@ -40,74 +40,64 @@ class Fahrer extends Page
                   GROUP BY `ordered_article`.`ordering_id`, `ordering`.`address`, `ordered_article`.`status`";
         $result = $this->db->query($query);
         $orders = [];
-    
+
         while ($row = $result->fetch_assoc()) {
             $orders[] = $row;
         }
         $result->free();
-    
+
         return $orders;
     }
-    
 
+    protected function generateView(): void
+    {
+        $data = $this->getViewData();
 
-    
-    protected function generateView():void {
+        $this->generatePageHeader('Fahrer', '', true); 
 
-    $data = $this->getViewData();
-
-    $this->generatePageHeader('Fahrer','', true); 
-
-    echo <<<HTML
-    <h1> <b>Fahrer (auslieferbare Bestellungen)</b> </h1>
-    <hr>
-   
-    <form method="post" action="fahrer.php">
+        echo <<<HTML
+        <h1> <b>Fahrer (auslieferbare Bestellungen)</b> </h1>
+        <hr>
+       
+        <form method="post" action="fahrer.php">
 HTML;
 
-    if (empty($data)) {
-        echo "<p>Es gibt derzeit keine Pizzen zu bearbeiten. Machen Sie eine Pause! 😊</p>";
-    }
-    else {
-        foreach ($data as $order) {
-            $id = $order['ordering_id'];
-            $address = $order ['address'];
-            $pizzaTypes = $order['pizza_types'];
-            $totalPrice = $order['total_price'];
-            $status = $order['status'];
-            
-            $checkedFertig = $status == '3' ? 'checked' : '';
-            $checkedUnterwegs = $status == '4' ? 'checked' : '';
-            $checkedGeliefert = $status == '5' ? 'checked' : '';
+        if (empty($data)) {
+            echo "<p>Es gibt derzeit keine Pizzen zu bearbeiten. Machen Sie eine Pause! 😊</p>";
+        } else {
+            foreach ($data as $order) {
+                $id = htmlspecialchars($order['ordering_id']);
+                $address = htmlspecialchars($order['address']);
+                $pizzaTypes = htmlspecialchars($order['pizza_types']);
+                $totalPrice = number_format((float)$order['total_price'], 2);
+                $status = $order['status'];
+                
+                $checkedFertig = $status == '3' ? 'checked' : '';
+                $checkedUnterwegs = $status == '4' ? 'checked' : '';
+                $checkedGeliefert = $status == '5' ? 'checked' : '';
 
+                echo <<<HTML
+                    <label>
+                        <input type="radio" name="status[$id]" value="3" $checkedFertig/> Fertig
+                        <input type="radio" name="status[$id]" value="4" $checkedUnterwegs/> Unterwegs
+                        <input type="radio" name="status[$id]" value="5" $checkedGeliefert/> Geliefert
 
-            $gerundeteTotalPrice = number_format((float)$totalPrice, 2);
+                        <p> Bestellung von $address: $pizzaTypes, $totalPrice EUR </p>
+                    </label>
+                    <br>
+                HTML;
+            }
+        }
 
-            echo <<<HTML
-                <label>
-                    <input type="radio" name="status[$id]" value="3" $checkedFertig/> Fertig
-                    <input type="radio" name="status[$id]" value="4" $checkedUnterwegs/> Unterwegs
-                    <input type="radio" name="status[$id]" value="5" $checkedGeliefert/> Geliefert
-
-                    <p> Bestellung von $address: $pizzaTypes, $gerundeteTotalPrice EUR </p>
-                </label>
-                <br>
-            HTML;
-
-           
-    }
-}
-
-    echo <<<HTML
-        <input type="submit" value="Aktualisieren">
-    </form>
+        echo <<<HTML
+            <input type="submit" value="Aktualisieren">
+        </form>
 HTML;
 
-    $this->generatePageFooter();
-}
+        $this->generatePageFooter();
+    }
 
-
-    public static function main():void
+    public static function main(): void
     {
         try {
             $page = new Fahrer();
