@@ -95,7 +95,7 @@ HTML;
         <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
             <fieldset>
                 <legend>Bitte wählen Sie aus</legend>
-                <select name="Pizza_type[]" id="Pizza_type" size="5" multiple>
+                <select name="Pizza_type[]" id="Pizza_type" size="5" multiple required>
 HTML;
 
         foreach ($pizzas as $pizza) {
