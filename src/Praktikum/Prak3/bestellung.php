@@ -22,6 +22,7 @@ class Bestellung extends Page
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pizzaIds = $_POST['Pizza_type'];
             $address = $_POST['Adresse'];
+            $address = mysqli_real_escape_string($this->db, $address);
 
             // Prepared Statement für die Bestellung
             $query = "INSERT INTO `ordering` (`address`) VALUES (?)";
