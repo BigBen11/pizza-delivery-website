@@ -57,7 +57,8 @@ class KundenStatus extends Page
         // Abrufen der Daten
         $data = $this->getViewData();
         // Konvertieren der Daten in JSON und Ausgeben
-        echo json_encode($data);
+        $serializedData =  json_encode($data);
+        echo $serializedData;
     }
 
     public static function main(): void
