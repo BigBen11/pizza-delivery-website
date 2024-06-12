@@ -32,9 +32,7 @@ class Fahrer extends Page
 
     protected function getViewData():array
     {
-        // , GROUP_CONCAT(`article`.`name` SEPARATOR ', ')
-
-        $query = "SELECT `ordered_article`.`ordering_id`, `ordered_article`.`status`, `ordering`.`address` AS pizza_types
+        $query = "SELECT `ordered_article`.`ordering_id`, `ordered_article`.`status`, `ordering`.`address` AS address, GROUP_CONCAT(`article`.`name` SEPARATOR ', ') AS pizza_types, SUM(`article`.`price`) AS total_price
                   FROM `ordered_article` 
                   JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
                   JOIN `ordering` ON `ordered_article`.`ordering_id` = `ordering`.`ordering_id`
@@ -50,6 +48,9 @@ class Fahrer extends Page
     
         return $orders;
     }
+    
+
+
     
     protected function generateView():void {
 
@@ -70,13 +71,17 @@ HTML;
     else {
         foreach ($data as $order) {
             $id = $order['ordering_id'];
-            $address = $order['address'];
+            $address = $order ['address'];
             $pizzaTypes = $order['pizza_types'];
+            $totalPrice = $order['total_price'];
             $status = $order['status'];
             
             $checkedFertig = $status == '3' ? 'checked' : '';
             $checkedUnterwegs = $status == '4' ? 'checked' : '';
             $checkedGeliefert = $status == '5' ? 'checked' : '';
+
+
+            $gerundeteTotalPrice = number_format((float)$totalPrice, 2);
 
             echo <<<HTML
                 <label>
@@ -84,10 +89,12 @@ HTML;
                     <input type="radio" name="status[$id]" value="4" $checkedUnterwegs/> Unterwegs
                     <input type="radio" name="status[$id]" value="5" $checkedGeliefert/> Geliefert
 
-                    Bestellung von $address: $pizzaTypes
+                    <p> Bestellung von $address: $pizzaTypes, $gerundeteTotalPrice EUR </p>
                 </label>
                 <br>
             HTML;
+
+           
     }
 }
 

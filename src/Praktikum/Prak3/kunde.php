@@ -56,17 +56,33 @@ class Kunde extends Page
         <hr>
 HTML;
 
-        if (empty($data)) {
+        if (empty($orders)) {
             echo "<p>Du hast derzeit keine Bestellungen, mache jetzt eine! 😊</p>";
         }
-
+        else {
         echo "<ul>";
         foreach ($orders as $order) {
             $pizzaName = htmlspecialchars($order['name']);
             $status = $order['status'];
+            if($status == 1)
+                $status = "Bestellt";
+            
+            else if($status == 2){
+                $status = "Im Ofen";
+            }
+            else if($status == 3){
+                $status = "Fertig";
+            }
+            else if($status == 4){
+                $status = "Unterwegs";
+            }
+            else if($status == 5){
+                $status = "Geliefert";
+            }
             echo "<li>" . $pizzaName . ": " . $status . "</li>";
         }
         echo "</ul>";
+    }
 
         echo <<<HTML
         <a href="./bestellung.php">
