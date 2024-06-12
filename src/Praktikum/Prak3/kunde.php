@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 require_once './Page.php';
 
+session_start();
+
 class Kunde extends Page
 {
     protected function __construct()
@@ -20,18 +22,21 @@ class Kunde extends Page
 
     protected function getViewData():array
     {
+        if (isset($_SESSION['orderingId'])) {
+            $orderingId = $_SESSION['orderingId'];
+
+        }
+
         $query = "SELECT `ordering`.`ordering_id`, `article`.`name`, `ordered_article`.`status`, ordering.address
                   FROM `ordering` 
                   JOIN `ordered_article` ON `ordering`.`ordering_id` = `ordered_article`.`ordering_id` 
                   JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
-                  ";
-                  //WHERE `ordering`.`ordering_id` = ?"; // Kunde wird später per Session bestimmt
+                  WHERE `ordering`.`ordering_id` = ?"; // Kunde wird später per Session bestimmt
 
 
         $stmt = $this->db->prepare($query);
 
-        //$customerId = 19; // Beispiel-Kunde, später durch Session ersetzt
-        //$stmt->bind_param('i', $customerId);
+        $stmt->bind_param('i', $orderingId);
         
         $stmt->execute();
         $result = $stmt->get_result();

@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 require_once './Page.php';
 
+session_start();
+
 class Bestellung extends Page
 {
     protected function __construct()
@@ -25,13 +27,15 @@ class Bestellung extends Page
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('s', $address);
             $stmt->execute();
-            $orderId = $stmt->insert_id;
+            $orderingId = $stmt->insert_id;
             $stmt->close();
+
+            $_SESSION['orderingId'] = $orderingId;
 
             foreach ($pizzaIds as $pizzaId) {
                 $query = "INSERT INTO `ordered_article` (`ordering_id`, `article_id`, `status`) VALUES (?, ?, 1)";
                 $stmt = $this->db->prepare($query);
-                $stmt->bind_param('ii', $orderId, $pizzaId);
+                $stmt->bind_param('ii', $orderingId, $pizzaId);
                 $stmt->execute();
                 $stmt->close();
             }
