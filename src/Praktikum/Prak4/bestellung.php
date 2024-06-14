@@ -19,8 +19,8 @@ class Bestellung extends Page
     {
         parent::processReceivedData();
 
-        if (isset($_POST['Pizza_type'])) {
-            $pizzaIds = $_POST['Pizza_type'];
+        if (isset($_POST['warenkorb'])) {
+            $pizzaIds = $_POST['warenkorb'];
             $address = $_POST['Adresse'];
             
             // Prepared Statement für die Bestellung
@@ -66,7 +66,7 @@ class Bestellung extends Page
     protected function generateView(): void
     {
         $pizzas = $this->getViewData();
-        $this->generatePageHeader('Bestellung');
+        $this->generatePageHeader('Bestellung', 'bestellung.js');
 
         echo <<<HTML
         <h1> <b>Bestellung</b> </h1>
@@ -79,10 +79,13 @@ HTML;
             $name = htmlspecialchars($pizza['name']);
             $picture = htmlspecialchars($pizza['picture']);
             $price = htmlspecialchars($pizza['price']);
+            $price = number_format((float)$price, 2);
 
             echo <<<HTML
             <div>
-                <img src="$picture" alt="$name" width="90" height="100">
+                <img src="$picture" data-name="$name" data-price="$price" 
+                width="90" height="100" style="cursor: pointer;" onclick="addPizza(this)">
+
                 <div> $name </div>
                 <div> $price € </div>
             </div>
@@ -95,20 +98,24 @@ HTML;
         <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
             <fieldset>
                 <legend>Bitte wählen Sie aus</legend>
-                <select name="Pizza_type[]" id="Pizza_type" size="5" multiple required>
+                <select name="Pizza_type[]" id="warenkorb" size="5" style="min-width: 200px;" multiple>
 HTML;
 
-        foreach ($pizzas as $pizza) {
-            $id = htmlspecialchars($pizza['article_id']);
-            $name = htmlspecialchars($pizza['name']);
+        //foreach ($pizzas as $pizza) {
+        //    $id = htmlspecialchars($pizza['article_id']);
+        //    $name = htmlspecialchars($pizza['name']);
 
-            echo <<<HTML
-                    <option value="$id"> $name </option>
-HTML;
-        }
+        //    echo <<<HTML
+        //            <option value="$id"> $name </option>
+        //      HTML;
+        //}
 
         echo <<<HTML
                 </select>
+
+                <h2>Preis</h2>
+                <p id="preisAusgabe"> 0€ </p>
+
             </fieldset>
             <br>
             <input type="text" name="Adresse" placeholder="Ihre Adresse" required>

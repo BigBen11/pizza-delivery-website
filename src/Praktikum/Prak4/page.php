@@ -34,12 +34,17 @@ abstract class Page
         $title = htmlspecialchars($title);
         $refresh = $autoreload ? '<meta http-equiv="refresh" content="10">' : ''; // Seite alle 10 Sekunden aktualisieren, wenn $autoreload wahr ist
 
+        if(!empty($jsFile)){
+            $js_tag = '<script src=" ' . $jsFile . ' " defer> </script>';
+        }
+
         echo <<<EOT
         <!DOCTYPE html>
         <html lang="de">
         <head>
             <meta charset="UTF-8">
             <title>$title</title>
+            $js_tag
         </head>
         <body>
             <header>
