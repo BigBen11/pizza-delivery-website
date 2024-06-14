@@ -92,7 +92,7 @@ HTML;
     
 
         echo <<<HTML
-            <input type="submit" value="Aktualisieren">
+            
         </form>
 HTML;
 
