@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     requestData();
+    window.setInterval (requestData, 2000);
 });
 
 var request = new XMLHttpRequest(); 
