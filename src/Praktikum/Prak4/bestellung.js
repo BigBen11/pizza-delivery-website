@@ -9,6 +9,7 @@
 
   // Add pizza to cart
   window.addPizza = function(pizza) {
+    "use strict";
       const name = pizza.getAttribute('data-name');
       const price = parseFloat(pizza.getAttribute('data-price'));
       const id = parseFloat(pizza.getAttribute('data-id'));
@@ -24,6 +25,7 @@
 
   // Update total price
   function updateTotalPrice() {
+    "use strict";
       let total = 0;
       for (let option of warenkorb.options) {
           total += parseFloat(option.getAttribute('data-price'));
@@ -33,6 +35,7 @@
 
   // Validate order button
   function validateOrderButton() {
+    "use strict";
       const isAddressFilled = addressInput.value.trim() !== '';
       const isCartNotEmpty = warenkorb.options.length > 0;
       orderButton.disabled = !(isAddressFilled && isCartNotEmpty);
@@ -44,6 +47,7 @@
 
   // Delete all items from the cart
   resetAllButton.addEventListener('click', function() {
+    "use strict";
       while (warenkorb.options.length > 0) {
           warenkorb.remove(0);
       }
@@ -53,6 +57,7 @@
 
   // Delete selected items from the cart
   resetSelectedButton.addEventListener('click', function() {
+    "use strict";
       const selectedOptions = Array.from(warenkorb.selectedOptions);
       selectedOptions.forEach(option => option.remove());
       updateTotalPrice();
@@ -61,6 +66,7 @@
 
   // Automatically select all pizzas before submitting
   document.getElementById('myForm').addEventListener('submit', function() {
+    "use strict";
       for (let option of warenkorb.options) {
           option.selected = true;
       }

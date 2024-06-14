@@ -6,12 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
 var request = new XMLHttpRequest(); 
 
 function requestData() {
+    "use strict";
     request.open("GET", "KundenStatus.php"); // URL für HTTP-GET
     request.onreadystatechange = processData; // Callback-Handler zuordnen
     request.send(null); // Request abschicken
 }
 
 function processData() {
+    "use strict";
     if (request.readyState == 4) { // Übertragung = DONE
         if (request.status == 200) { // HTTP-Status = OK
             if (request.responseText != null) {
@@ -26,6 +28,7 @@ function processData() {
 }
 
 function process(data) {
+    "use strict";
     let orders;
 
     try {
@@ -55,6 +58,7 @@ function process(data) {
 }
 
 function getStatusText(status) {
+    "use strict";
     switch (status) {
         case 1: return 'Bestellt';
         case 2: return 'Im Ofen';
