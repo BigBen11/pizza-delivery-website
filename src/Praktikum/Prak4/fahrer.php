@@ -52,16 +52,16 @@ class Fahrer extends Page
     protected function generateView(): void
     {
         $data = $this->getViewData();
-
+    
         $this->generatePageHeader('Fahrer', '', true); 
-
+    
         echo <<<HTML
         <h1> <b>Fahrer (auslieferbare Bestellungen)</b> </h1>
         <hr>
-       
-        <form method="post" action="fahrer.php">
-HTML;
-
+        
+        <form id="fahrer-form" method="post" action="fahrer.php">
+    HTML;
+    
         if (empty($data)) {
             echo "<p>Es gibt derzeit keine Pizzen zu bearbeiten. Machen Sie eine Pause! 😊</p>";
         } else {
@@ -75,27 +75,27 @@ HTML;
                 $checkedFertig = $status == '3' ? 'checked' : '';
                 $checkedUnterwegs = $status == '4' ? 'checked' : '';
                 $checkedGeliefert = $status == '5' ? 'checked' : '';
-
+    
                 echo <<<HTML
                     <label>
-                        <input type="radio" name="status[$id]" value="3" $checkedFertig/> Fertig
-                        <input type="radio" name="status[$id]" value="4" $checkedUnterwegs/> Unterwegs
-                        <input type="radio" name="status[$id]" value="5" $checkedGeliefert/> Geliefert
-
+                        <input type="radio" name="status[$id]" value="3" $checkedFertig onclick="document.getElementById('fahrer-form').submit();"/> Fertig
+                        <input type="radio" name="status[$id]" value="4" $checkedUnterwegs onclick="document.getElementById('fahrer-form').submit();"/> Unterwegs
+                        <input type="radio" name="status[$id]" value="5" $checkedGeliefert onclick="document.getElementById('fahrer-form').submit();"/> Geliefert
+    
                         <p> Bestellung von $address: $pizzaTypes, $totalPrice EUR </p>
                     </label>
                     <br>
                 HTML;
             }
         }
-
+    
         echo <<<HTML
-            <input type="submit" value="Aktualisieren">
         </form>
-HTML;
-
+    HTML;
+    
         $this->generatePageFooter();
     }
+    
 
     public static function main(): void
     {
