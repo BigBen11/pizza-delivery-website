@@ -1,7 +1,8 @@
-document.addEventListener('DOMContentLoaded', function() {
+
+
   const warenkorb = document.getElementById('warenkorb');
   const addressInput = document.querySelector('input[name="Adresse"]');
-  const orderButton = document.getElementById('B1');
+  const orderButton = document.getElementById('submit');
   const priceOutput = document.getElementById('preisAusgabe');
   const resetAllButton = document.querySelector('input[name="Alle_löschen"]');
   const resetSelectedButton = document.querySelector('input[name="Auswahl_löschen"]');
@@ -10,8 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addPizza = function(pizza) {
       const name = pizza.getAttribute('data-name');
       const price = parseFloat(pizza.getAttribute('data-price'));
+      const id = parseFloat(pizza.getAttribute('data-id'));
+
       const option = document.createElement('option');
-      option.value = name;
+      option.value = id;
       option.textContent = `${name} - ${price.toFixed(2)}€`;
       option.setAttribute('data-price', price);
       warenkorb.appendChild(option);
@@ -65,4 +68,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initialize button state
   validateOrderButton();
-});
+

@@ -19,9 +19,12 @@ class Bestellung extends Page
     {
         parent::processReceivedData();
 
+
         if (isset($_POST['warenkorb'])) {
             $pizzaIds = $_POST['warenkorb'];
             $address = $_POST['Adresse'];
+
+            
             
             // Prepared Statement für die Bestellung
             $query = "INSERT INTO `ordering` (`address`) VALUES (?)";
@@ -83,7 +86,7 @@ HTML;
 
         echo <<<HTML
         <div>
-            <img src="$picture" data-name="$name" data-price="$price" 
+            <img src="$picture" data-name="$name" data-price="$price" data-id="$id"
             width="90" height="100" style="cursor: pointer;" onclick="addPizza(this)">
             <div> $name </div>
             <div> $price € </div>
@@ -96,17 +99,20 @@ HTML;
     <h2> <b>Warenkorb</b> </h2>
     <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
         <fieldset>
-            <legend>Bitte wählen Sie aus</legend>
-            <select name="Pizza_type[]" id="warenkorb" size="5" style="min-width: 200px;" multiple></select>
+            <select name="warenkorb[]" id="warenkorb" size="5" style="min-width: 200px;" multiple></select>
             <h2>Preis</h2>
             <p id="preisAusgabe">0€</p>
         </fieldset>
+
         <br>
+
         <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
+
         <br><br>
+
         <input type="reset" name="Alle_löschen" value="Alle löschen">
         <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
-        <input type="submit" id="B1" name="Bestellen" value="Bestellen" disabled>
+        <input type="submit" id="submit" name="Bestellen" value="Bestellen" disabled>
     </form>
 HTML;
 
