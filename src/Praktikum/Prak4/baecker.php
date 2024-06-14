@@ -59,7 +59,7 @@ class Baecker extends Page
         <h1> <b>Pizzabäcker (bestellte Pizzen)</b> </h1>
         <hr>
         
-        <form method="post" action="baecker.php">
+        <form id='baecker-form' method="post" action="baecker.php">
 HTML;
 
 
@@ -79,9 +79,9 @@ HTML;
 
             echo <<<HTML
             <label>
-                <input type="radio" name="status[$id]" value="1" $checkedBestellt/> Bestellt
-                <input type="radio" name="status[$id]" value="2" $checkedImOfen/> Im Ofen
-                <input type="radio" name="status[$id]" value="3" $checkedFertig/> Fertig
+                <input type="radio" name="status[$id]" value="1" onclick="document.forms['baecker-form'].submit();" $checkedBestellt/> Bestellt
+                <input type="radio" name="status[$id]" value="2" onclick="document.forms['baecker-form'].submit();" $checkedImOfen/> Im Ofen
+                <input type="radio" name="status[$id]" value="3" onclick="document.forms['baecker-form'].submit();" $checkedFertig/> Fertig
                
                 $name
             </label>
