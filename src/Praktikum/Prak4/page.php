@@ -37,6 +37,9 @@ abstract class Page
         if(!empty($jsFile)){
             $js_tag = '<script src=" ' . $jsFile . ' " defer> </script>';
         }
+        else {
+            $js_tag = "";
+        }
 
         echo <<<EOT
         <!DOCTYPE html>

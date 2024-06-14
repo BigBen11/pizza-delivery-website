@@ -64,70 +64,54 @@ class Bestellung extends Page
     }
 
     protected function generateView(): void
-    {
-        $pizzas = $this->getViewData();
-        $this->generatePageHeader('Bestellung', 'bestellung.js');
+{
+    $pizzas = $this->getViewData();
+    $this->generatePageHeader('Bestellung', 'bestellung.js'); // Ensure the JS file is included here
+
+    echo <<<HTML
+    <h1> <b>Bestellung</b> </h1>
+    <hr>
+    <h2> <b>Speisekarte</b> </h2>
+HTML;
+
+    foreach ($pizzas as $pizza) {
+        $id = htmlspecialchars($pizza['article_id']);
+        $name = htmlspecialchars($pizza['name']);
+        $picture = htmlspecialchars($pizza['picture']);
+        $price = htmlspecialchars($pizza['price']);
+        $price = number_format((float)$price, 2);
 
         echo <<<HTML
-        <h1> <b>Bestellung</b> </h1>
-        <hr>
-        <h2> <b>Speisekarte</b> </h2>
+        <div>
+            <img src="$picture" data-name="$name" data-price="$price" 
+            width="90" height="100" style="cursor: pointer;" onclick="addPizza(this)">
+            <div> $name </div>
+            <div> $price € </div>
+        </div>
 HTML;
-
-        foreach ($pizzas as $pizza) {
-            $id = htmlspecialchars($pizza['article_id']);
-            $name = htmlspecialchars($pizza['name']);
-            $picture = htmlspecialchars($pizza['picture']);
-            $price = htmlspecialchars($pizza['price']);
-            $price = number_format((float)$price, 2);
-
-            echo <<<HTML
-            <div>
-                <img src="$picture" data-name="$name" data-price="$price" 
-                width="90" height="100" style="cursor: pointer;" onclick="addPizza(this)">
-
-                <div> $name </div>
-                <div> $price € </div>
-            </div>
-HTML;
-        }
-
-        echo <<<HTML
-        <br>
-        <h2> <b>Warenkorb</b> </h2>
-        <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
-            <fieldset>
-                <legend>Bitte wählen Sie aus</legend>
-                <select name="Pizza_type[]" id="warenkorb" size="5" style="min-width: 200px;" multiple>
-HTML;
-
-        //foreach ($pizzas as $pizza) {
-        //    $id = htmlspecialchars($pizza['article_id']);
-        //    $name = htmlspecialchars($pizza['name']);
-
-        //    echo <<<HTML
-        //            <option value="$id"> $name </option>
-        //      HTML;
-        //}
-
-        echo <<<HTML
-                </select>
-
-                <h2>Preis</h2>
-                <p id="preisAusgabe"> 0€ </p>
-
-            </fieldset>
-            <br>
-            <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
-            <br><br>
-            <input type="reset" name="Alle_löschen" value="Alle löschen">
-            <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
-            <input type="submit" id="B1" name="Bestellen" value="Bestellen">
-        </form>
-HTML;
-
-        $this->generatePageFooter();
     }
+
+    echo <<<HTML
+    <br>
+    <h2> <b>Warenkorb</b> </h2>
+    <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
+        <fieldset>
+            <legend>Bitte wählen Sie aus</legend>
+            <select name="Pizza_type[]" id="warenkorb" size="5" style="min-width: 200px;" multiple></select>
+            <h2>Preis</h2>
+            <p id="preisAusgabe">0€</p>
+        </fieldset>
+        <br>
+        <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
+        <br><br>
+        <input type="reset" name="Alle_löschen" value="Alle löschen">
+        <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
+        <input type="submit" id="B1" name="Bestellen" value="Bestellen" disabled>
+    </form>
+HTML;
+
+    $this->generatePageFooter();
+}
 
     public static function main(): void
     {
