@@ -1,31 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const jsonData = `[
-    {
-        "ordering_id": 80,
-        "name": "Salami",
-        "status": 5,
-        "address": "dddd"
-    },
-    {
-        "ordering_id": 80,
-        "name": "Vegetaria",
-        "status": 5,
-        "address": "dddd"
-    },
-    {
-        "ordering_id": 80,
-        "name": "Spinat-Hühnchen",
-        "status": 5,
-        "address": "dddd"
-    }
-]`;
-
-    process(jsonData);
+    requestData();
 });
+
+var request = new XMLHttpRequest(); 
+
+function requestData() {
+    request.open("GET", "KundenStatus.php"); // URL für HTTP-GET
+    request.onreadystatechange = processData; // Callback-Handler zuordnen
+    request.send(null); // Request abschicken
+}
+
+function processData() {
+    if (request.readyState == 4) { // Übertragung = DONE
+        if (request.status == 200) { // HTTP-Status = OK
+            if (request.responseText != null) {
+                process(request.responseText); // Daten verarbeiten
+            } else {
+                console.error("Dokument ist leer");
+            }
+        } else {
+            console.error("Übertragung fehlgeschlagen");
+        }
+    }
+}
 
 function process(data) {
     let orders;
-    
+
     try {
         orders = typeof data === 'string' ? JSON.parse(data) : data;
     } catch (e) {
