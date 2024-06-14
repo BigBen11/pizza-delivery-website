@@ -50,53 +50,24 @@ class Kunde extends Page
         return $orders;
     }
 
-    protected function generateView():void
-    {
-        $orders = $this->getViewData();
+    protected function generateView(): void
+{
+    $this->generatePageHeader('Kunde'); 
 
-        $this->generatePageHeader('Kunde'); 
-
-        echo <<<HTML
-        <h1> <b>Kunde (Lieferstatus)</b> </h1>
-        <hr>
+    echo <<<HTML
+    <h1> <b>Kunde (Lieferstatus)</b> </h1>
+    <hr>
+    <div id="order-status"></div>
+    <a href="./bestellung.php">
+        <button>Neue Bestellung</button>
+    </a>
+    <script src="StatusUpdate.js"></script>
 HTML;
 
-        if (empty($orders)) {
-            echo "<p>Du hast derzeit keine Bestellungen, mache jetzt eine! 😊</p>";
-        }
-        else {
-        echo "<ul>";
-        foreach ($orders as $order) {
-            $pizzaName = htmlspecialchars($order['name']);
-            $status = $order['status'];
-            if($status == 1)
-                $status = "Bestellt";
-            
-            else if($status == 2){
-                $status = "Im Ofen";
-            }
-            else if($status == 3){
-                $status = "Fertig";
-            }
-            else if($status == 4){
-                $status = "Unterwegs";
-            }
-            else if($status == 5){
-                $status = "Geliefert";
-            }
-            echo "<li>" . $pizzaName . ": " . $status . "</li>";
-        }
-        echo "</ul>";
-    }
+    $this->generatePageFooter();
+}
 
-        echo <<<HTML
-        <a href="./bestellung.php">
-            <button>Neue Bestellung</button>
-        </a>
-HTML;
 
-        $this->generatePageFooter();
-    }
 
     public static function main():void
     {
