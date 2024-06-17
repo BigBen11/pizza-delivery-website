@@ -1,0 +1,22 @@
+.flex-container {
+    display: flex;
+
+    height: 300px;
+    width: 300px;
+
+    justify-content: center;
+    align-items: center;
+
+    background-color: blue;
+}
+
+
+.flex-item {
+    display: flex;
+
+    height: 100px;
+    width: 100px;
+
+    background-color: red;
+    position: relative;
+}
