@@ -1,0 +1,139 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styles for the body and container */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 100%;
+    padding: 1rem;
+    margin: auto;
+}
+
+/* Styles for the header */
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+/* Styles for the links in the header */
+header a {
+    color: white; /* Set the link color to white */
+    text-decoration: none;
+    margin: 0 1rem; /* Add some spacing between the links */
+}
+
+header a:hover {
+    color: #ddd; /* Change color when hovering */
+}
+
+header a:active {
+    color: #bbb; /* Change color when the link is active (clicked) */
+}
+
+/* Styles for the main content */
+main {
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for the footer */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Styles for the pizza items */
+.pizza-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    background: #fff;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.pizza-item img {
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.pizza-item div {
+    margin-top: 0.5rem;
+}
+
+/* Styles for the form elements */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+form input, form select {
+    margin: 1rem 0;
+    padding: 0.75rem;
+    width: 100%;
+    max-width: 20rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Media queries for larger screens */
+@media (min-width: 48rem) {
+    .container {
+        max-width: 46.875rem;
+    }
+
+    .pizza-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .pizza-item div {
+        margin-top: 0;
+        margin-left: 1rem;
+    }
+
+    form {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    form input, form select {
+        width: 48%;
+    }
+}
+
+@media (min-width: 64rem) {
+    .container {
+        max-width: 60rem;
+    }
+}
