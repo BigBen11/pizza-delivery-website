@@ -85,9 +85,9 @@ HTML;
         $price = number_format((float)$price, 2);
 
         echo <<<HTML
-        <div>
-            <img src="$picture" data-name="$name" data-price="$price" data-id="$id"
-            width="90" height="100" style="cursor: pointer;" onclick="addPizza(this)">
+        <div class="pizza-item">
+            <img class="pizza-item img" src="$picture" data-name="$name" data-price="$price" data-id="$id"
+            width="90" height="100" onclick="addPizza(this)">
             <div> $name </div>
             <div> $price € </div>
         </div>
@@ -98,7 +98,7 @@ HTML;
     <br>
     <h2> <b>Warenkorb</b> </h2>
     <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
-        <fieldset>
+        <fieldset id="warenkorb-fieldset">
             <select name="warenkorb[]" id="warenkorb" size="5" style="min-width: 200px;" multiple></select>
             <h2>Preis</h2>
             <p id="preisAusgabe">0€</p>
