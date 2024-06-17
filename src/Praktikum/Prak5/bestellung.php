@@ -73,8 +73,12 @@ class Bestellung extends Page
 
     echo <<<HTML
     <h1> <b>Bestellung</b> </h1>
-    <hr>
+
     <h2> <b>Speisekarte</b> </h2>
+    <div class="speisekarte-and-form">
+        
+        <div class="speisekarte">
+            
 HTML;
 
     foreach ($pizzas as $pizza) {
@@ -85,35 +89,43 @@ HTML;
         $price = number_format((float)$price, 2);
 
         echo <<<HTML
-        <div class="pizza-item">
-            <img class="pizza-item img" src="$picture" data-name="$name" data-price="$price" data-id="$id"
-            width="90" height="100" onclick="addPizza(this)">
-            <div> $name </div>
-            <div> $price € </div>
-        </div>
-HTML;
+            <div class="pizza-item">
+                <img class="pizza-item img" src="$picture" data-name="$name" data-price="$price" data-id="$id"
+                width="90" height="100" onclick="addPizza(this)">
+                <div> $name </div>
+                <div> $price € </div>
+            </div>
+        HTML;
     }
 
     echo <<<HTML
-    <br>
-    <h2> <b>Warenkorb</b> </h2>
-    <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
-        <fieldset id="warenkorb-fieldset">
-            <select name="warenkorb[]" id="warenkorb" size="5" style="min-width: 200px;" multiple></select>
-            <h2>Preis</h2>
-            <p id="preisAusgabe">0€</p>
-        </fieldset>
+            </div>
 
-        <br>
+            <div class="form">
 
-        <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
+                <h2> <b>Warenkorb</b> </h2>
 
-        <br><br>
+                <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
+                    <fieldset id="warenkorb-fieldset">
+                        <select name="warenkorb[]" id="warenkorb" size="5" style="min-width: 200px;" multiple></select>
+                        <h2>Preis</h2>
+                        <p id="preisAusgabe">0€</p>
+                    </fieldset>
 
-        <input type="reset" name="Alle_löschen" value="Alle löschen">
-        <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
-        <input type="submit" id="submit" name="Bestellen" value="Bestellen" disabled>
-    </form>
+                    <br>
+
+                    <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
+
+                    <br><br>
+
+                    <input type="reset" name="Alle_löschen" value="Alle löschen">
+                    <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
+                    <input type="submit" id="submit" name="Bestellen" value="Bestellen" disabled>
+                </form>
+
+            </div>
+
+        </div>
 HTML;
 
     $this->generatePageFooter();

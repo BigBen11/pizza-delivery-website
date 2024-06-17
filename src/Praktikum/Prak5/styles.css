@@ -65,6 +65,23 @@ footer {
     width: 100%;
 }
 
+
+.speisekarte-and-form{
+    display: flex;
+    
+    flex-direction: row;
+}
+
+.speisekarte{
+    display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 3 equal columns */
+      grid-template-rows: repeat(2, 200px); /* 2 rows, each 200px high */
+      gap: 20px; /* Gap between grid items */
+      padding: 20px;
+}
+
+
+
 /* Styles for the pizza items */
 .pizza-item {
     display: flex;
@@ -74,7 +91,7 @@ footer {
     max-width: 400px;
     max-height: 200px;
 
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     margin-bottom: 10px;
     background: #fff;
@@ -112,7 +129,7 @@ form {
 }
 
 form input, form select {
-    margin: 1rem 0;
+    /*margin: 1rem 0;*/
     padding: 0.75rem;
     width: 100%;
     max-width: 20rem;
@@ -121,13 +138,18 @@ form input, form select {
 }
 
 /* Media queries for larger screens */
-@media (min-width: 32rem) {
+@media (max-width: 65em) {
     .container {
         max-width: 46.875rem;
     }
 
+    .speisekarte-and-form{
+        display: flex;
+        flex-direction: column;
+    }
+
     .pizza-item {
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
         align-items: center;
     }
