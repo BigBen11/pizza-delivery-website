@@ -59,7 +59,7 @@ class Kunde extends Page
     <hr>
     <div id="order-status"></div>
     <a href="./bestellung.php">
-        <button>Neue Bestellung</button>
+        <button class="neue-bestellung">Neue Bestellung</button>
     </a>
     <script src="StatusUpdate.js"></script>
 HTML;

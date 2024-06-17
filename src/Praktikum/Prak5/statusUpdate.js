@@ -51,6 +51,7 @@ function process(data) {
         const li = document.createElement('li');
         const statusText = getStatusText(order.status);
         li.textContent = `${order.name}: ${statusText}`;
+        li.classList.add('kunde-pizza-item');
         ul.appendChild(li);
     });
 
