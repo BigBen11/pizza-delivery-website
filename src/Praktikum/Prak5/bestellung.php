@@ -114,9 +114,9 @@ HTML;
 
                     <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
 
-                    <input type="reset" name="Alle_löschen" value="Alle löschen">
-                    <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
-                    <input type="submit" id="submit" name="Bestellen" value="Bestellen" disabled>
+                    <input class="bestellung-buttons" type="reset" name="Alle_löschen" value="Alle löschen">
+                    <input class="bestellung-buttons" type="reset" name="Auswahl_löschen" value="Auswahl löschen">
+                    <input id="bestellung-button-submit" type="submit" id="submit" name="Bestellen" value="Bestellen" disabled>
                 </form>
 
             </div>
