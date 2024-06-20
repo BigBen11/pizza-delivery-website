@@ -56,6 +56,7 @@ class Baecker extends Page
         $this->generatePageHeader('Bäcker', '', true); 
 
         echo <<<HTML
+        <div id='baecker-container'>
         <h1> <b>Pizzabäcker (bestellte Pizzen)</b> </h1>
         <hr>
         
@@ -78,7 +79,7 @@ HTML;
             
 
             echo <<<HTML
-            <label>
+            <label id="baecker-label">
                 <input type="radio" name="status[$id]" value="1" onclick="document.forms['baecker-form'].submit();" $checkedBestellt/> Bestellt
                 <input type="radio" name="status[$id]" value="2" onclick="document.forms['baecker-form'].submit();" $checkedImOfen/> Im Ofen
                 <input type="radio" name="status[$id]" value="3" onclick="document.forms['baecker-form'].submit();" $checkedFertig/> Fertig
@@ -94,6 +95,7 @@ HTML;
         echo <<<HTML
             
         </form>
+    </div>
 HTML;
 
         $this->generatePageFooter();

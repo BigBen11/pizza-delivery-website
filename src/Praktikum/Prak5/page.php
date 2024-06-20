@@ -35,7 +35,7 @@ abstract class Page
         $refresh = $autoreload ? '<meta http-equiv="refresh" content="10">' : ''; // Seite alle 10 Sekunden aktualisieren, wenn $autoreload wahr ist
 
         if(!empty($jsFile)){
-            $js_tag = '<script src=" ' . $jsFile . ' " defer> </script>';
+            $js_tag = '<script src="' . $jsFile . '" defer> </script>';
         }
         else {
             $js_tag = "";

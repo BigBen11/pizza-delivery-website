@@ -91,7 +91,7 @@ HTML;
         echo <<<HTML
             <div class="pizza-item">
                 <img class="pizza-item img" src="$picture" data-name="$name" data-price="$price" data-id="$id"
-                width="90" height="100" onclick="addPizza(this)">
+                width="90" height="100" onclick="addPizza(this)" alt="$name">
                 <div> $name </div>
                 <div> $price € </div>
             </div>
@@ -107,16 +107,12 @@ HTML;
 
                 <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
                     <fieldset id="warenkorb-fieldset">
-                        <select name="warenkorb[]" id="warenkorb" size="5" style="min-width: 200px;" multiple></select>
+                        <select tabindex="4" name="warenkorb[]" id="warenkorb" size="5" style="min-width: 200px;" multiple></select>
                         <h2>Preis</h2>
-                        <p id="preisAusgabe">0€</p>
+                        <p id="preisAusgabe">0.00€</p>
                     </fieldset>
 
-                    <br>
-
                     <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
-
-                    <br><br>
 
                     <input type="reset" name="Alle_löschen" value="Alle löschen">
                     <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
