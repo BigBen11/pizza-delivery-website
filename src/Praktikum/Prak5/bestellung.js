@@ -5,7 +5,7 @@
 
 const warenkorb = document.getElementById("warenkorb");
 const addressInput = document.querySelector("input[name='Adresse']");
-const orderButton = document.getElementById("submit");
+const orderButton = document.getElementById("bestellung-button-submit");
 const priceOutput = document.getElementById("preisAusgabe");
 const resetAllButton = document.querySelector("input[name='Alle_löschen']");
 const resetSelectedButton = document.querySelector("input[name='Auswahl_löschen']");
@@ -42,8 +42,8 @@ function updateTotalPrice() {
 // Validate order button
 function validateOrderButton() {
     "use strict";
-    var isAddressFilled = addressInput.value.trim() !== "";
-    var isCartNotEmpty = warenkorb.options.length > 0;
+    const isAddressFilled = addressInput.value.trim() !== '';
+    const isCartNotEmpty = warenkorb.options.length > 0;
     orderButton.disabled = !(isAddressFilled && isCartNotEmpty);
 }
 
