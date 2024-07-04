@@ -32,10 +32,9 @@ abstract class Page
     protected function generatePageHeader(string $title = "", string $jsFile = "", bool $autoreload = false):void
     {
         $title = htmlspecialchars($title);
-        //$refresh = $autoreload ? '<meta http-equiv="refresh" content="10">' : ''; // Seite alle 10 Sekunden aktualisieren, wenn $autoreload wahr ist
-
+        
         if(!empty($jsFile)){
-            $js_tag = '<script src="' . $jsFile . '" defer> </script>';
+            $js_tag = '<script src=" ' . $jsFile . ' " defer> </script>';
         }
         else {
             $js_tag = "";
@@ -46,9 +45,7 @@ abstract class Page
         <html lang="de">
         <head>
             <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>$title</title>
-            <link rel="stylesheet" type="text/css" href="styles.css">
             $js_tag
         </head>
         <body>
@@ -62,7 +59,7 @@ abstract class Page
                         <li><a href="kunde.php">Kunde</a></li>
                     </ul>
                 </nav>
-               
+            
             </header>
         EOT;
     }
