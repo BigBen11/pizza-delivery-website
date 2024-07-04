@@ -76,13 +76,18 @@ HTML;
                 $checkedGeliefert = $status == '5' ? 'checked' : '';
 
                 echo <<<HTML
-                <label>
-                    <input type="radio" name="status[$id]" value="3" $checkedFertig onclick="document.getElementById('fahrer-form').submit();"/> Fertig
-                    <input type="radio" name="status[$id]" value="4" $checkedUnterwegs onclick="document.getElementById('fahrer-form').submit();"/> Unterwegs
-                    <input type="radio" name="status[$id]" value="5" $checkedGeliefert onclick="document.getElementById('fahrer-form').submit();"/> Geliefert
+                <div>
                     <p>Bestellung von $address: $pizzaTypes, $totalPrice EUR</p>
-                </label>
-                <br>
+                    <label>
+                        <input type="radio" name="status[$id]" value="3" $checkedFertig onclick="document.getElementById('fahrer-form').submit();"/> Fertig
+                    </label>
+                    <label>
+                        <input type="radio" name="status[$id]" value="4" $checkedUnterwegs onclick="document.getElementById('fahrer-form').submit();"/> Unterwegs
+                    </label>
+                    <label>
+                        <input type="radio" name="status[$id]" value="5" $checkedGeliefert onclick="document.getElementById('fahrer-form').submit();"/> Geliefert
+                    </label>
+                </div>
 HTML;
             }
         }

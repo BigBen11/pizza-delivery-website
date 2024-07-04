@@ -13,16 +13,15 @@ class Kunde extends Page
         parent::__destruct();
     }
 
-    protected function processReceivedData():void
+    protected function processReceivedData(): void
     {
         parent::processReceivedData();
     }
 
-    protected function getViewData():array
+    protected function getViewData(): array
     {
         if (isset($_SESSION['orderingId'])) {
             $orderingId = $_SESSION['orderingId'];
-
         }
 
         $query = "SELECT `ordering`.`ordering_id`, `article`.`name`, `ordered_article`.`status`, ordering.address
@@ -31,11 +30,8 @@ class Kunde extends Page
                   JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
                   WHERE `ordering`.`ordering_id` = ?"; // Kunde wird per Session bestimmt
 
-
         $stmt = $this->db->prepare($query);
-
         $stmt->bind_param('i', $orderingId);
-        
         $stmt->execute();
         $result = $stmt->get_result();
         $orders = [];
@@ -49,26 +45,21 @@ class Kunde extends Page
     }
 
     protected function generateView(): void
-{
-    $this->generatePageHeader('Kunde'); 
+    {
+        $this->generatePageHeader('Kunde');
 
-    echo <<<HTML
-    <h1> <b>Kunde (Lieferstatus)</b> </h1>
-    <hr>
-    <div id="order-status"></div>
-    <a href="./bestellung.php">
-        <button class="neue-bestellung">Neue Bestellung</button>
-    </a>
-    <script src="StatusUpdate.js"></script>
+        echo <<<HTML
+        <h1><b>Kunde (Lieferstatus)</b></h1>
+        <hr>
+        <div id="order-status"></div>
+        <a href="./bestellung.php" class="neue-bestellung">Neue Bestellung</a>
+        <script src="StatusUpdate.js"></script>
 HTML;
 
-    $this->generatePageFooter();
-}
+        $this->generatePageFooter();
+    }
 
-
-
-
-    public static function main():void
+    public static function main(): void
     {
         try {
             session_start();
