@@ -52,16 +52,15 @@ class Fahrer extends Page
     protected function generateView(): void
     {
         $data = $this->getViewData();
-    
-        $this->generatePageHeader('Fahrer', '', true); 
-    
+
+        $this->generatePageHeader('Fahrer', '', true);
+
         echo <<<HTML
-        <h1> <b>Fahrer (auslieferbare Bestellungen)</b> </h1>
+        <h1><b>Fahrer (auslieferbare Bestellungen)</b></h1>
         <hr>
-        
         <form id="fahrer-form" method="post" action="fahrer.php">
-    HTML;
-    
+HTML;
+
         if (empty($data)) {
             echo "<p>Es gibt derzeit keine Pizzen zu bearbeiten. Machen Sie eine Pause! 😊</p>";
         } else {
@@ -71,31 +70,29 @@ class Fahrer extends Page
                 $pizzaTypes = htmlspecialchars($order['pizza_types']);
                 $totalPrice = number_format((float)$order['total_price'], 2);
                 $status = $order['status'];
-                
+
                 $checkedFertig = $status == '3' ? 'checked' : '';
                 $checkedUnterwegs = $status == '4' ? 'checked' : '';
                 $checkedGeliefert = $status == '5' ? 'checked' : '';
-    
+
                 echo <<<HTML
-                    <label>
-                        <input type="radio" name="status[$id]" value="3" $checkedFertig onclick="document.getElementById('fahrer-form').submit();"/> Fertig
-                        <input type="radio" name="status[$id]" value="4" $checkedUnterwegs onclick="document.getElementById('fahrer-form').submit();"/> Unterwegs
-                        <input type="radio" name="status[$id]" value="5" $checkedGeliefert onclick="document.getElementById('fahrer-form').submit();"/> Geliefert
-    
-                        <p> Bestellung von $address: $pizzaTypes, $totalPrice EUR </p>
-                    </label>
-                    <br>
-                HTML;
+                <label>
+                    <input type="radio" name="status[$id]" value="3" $checkedFertig onclick="document.getElementById('fahrer-form').submit();"/> Fertig
+                    <input type="radio" name="status[$id]" value="4" $checkedUnterwegs onclick="document.getElementById('fahrer-form').submit();"/> Unterwegs
+                    <input type="radio" name="status[$id]" value="5" $checkedGeliefert onclick="document.getElementById('fahrer-form').submit();"/> Geliefert
+                    <p>Bestellung von $address: $pizzaTypes, $totalPrice EUR</p>
+                </label>
+                <br>
+HTML;
             }
         }
-    
+
         echo <<<HTML
         </form>
-    HTML;
-    
+HTML;
+
         $this->generatePageFooter();
     }
-    
 
     public static function main(): void
     {
