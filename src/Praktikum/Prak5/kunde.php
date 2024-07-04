@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 require_once './Page.php';
 
-session_start();
-
 class Kunde extends Page
 {
     protected function __construct()
@@ -73,6 +71,7 @@ HTML;
     public static function main():void
     {
         try {
+            session_start();
             $page = new Kunde();
             $page->processReceivedData();
             $page->generateView();

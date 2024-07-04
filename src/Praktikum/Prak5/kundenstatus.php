@@ -3,7 +3,6 @@ require_once './Page.php';
 
 session_cache_limiter('nocache'); // VOR session_start()!
 session_cache_expire(0);
-session_start();
 
 class KundenStatus extends Page
 {
@@ -69,6 +68,7 @@ class KundenStatus extends Page
     public static function main(): void
     {
         try {
+            session_start();
             $page = new KundenStatus();
             $page->processReceivedData();
             $page->generateView();

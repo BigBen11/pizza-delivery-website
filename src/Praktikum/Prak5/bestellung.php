@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 require_once './Page.php';
 
-session_start();
 
 class Bestellung extends Page
 {
@@ -130,6 +129,7 @@ HTML;
     public static function main(): void
     {
         try {
+            session_start();
             $page = new Bestellung();
             $page->processReceivedData();
             $page->generateView();
