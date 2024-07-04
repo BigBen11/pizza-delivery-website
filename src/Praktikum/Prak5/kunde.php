@@ -31,7 +31,7 @@ class Kunde extends Page
                   FROM `ordering` 
                   JOIN `ordered_article` ON `ordering`.`ordering_id` = `ordered_article`.`ordering_id` 
                   JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
-                  WHERE `ordering`.`ordering_id` = ?"; // Kunde wird später per Session bestimmt
+                  WHERE `ordering`.`ordering_id` = ?"; // Kunde wird per Session bestimmt
 
 
         $stmt = $this->db->prepare($query);

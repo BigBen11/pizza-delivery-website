@@ -84,9 +84,10 @@ HTML;
                 <input type="radio" name="status[$id]" value="2" onclick="document.forms['baecker-form'].submit();" $checkedImOfen/> Im Ofen
                 <input type="radio" name="status[$id]" value="3" onclick="document.forms['baecker-form'].submit();" $checkedFertig/> Fertig
                
-                $name
+                <div> $name </div>
             </label>
-            <br>
+
+            
 HTML;
             }
         }

@@ -202,8 +202,9 @@ footer {
 
 /****BAECKER****/
 
+/*
 #baecker-container {
-    /*max-width: 800px;*/
+    max-width: 800px;
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -236,6 +237,14 @@ input[type="radio"] {
     margin-right: 10px;
 }
 
+*/
+
+#baecker-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
 .no-pizzas {
     text-align: center;
     color: #6c757d;
@@ -245,7 +254,7 @@ input[type="radio"] {
 
 
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
     /*.container {
         max-width: 46.875rem;
     }*/
@@ -264,13 +273,6 @@ input[type="radio"] {
     .pizza-item div {
         margin-top: 0;
         margin-left: 1rem;
-    }
-
-
-    #baecker-form {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
     }
 
     /*form {
