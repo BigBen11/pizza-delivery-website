@@ -103,6 +103,16 @@ abstract class Page
                 <title>$title</title>
             </head>
             <body>
+            <header>
+                <h1>HDA_Chatbot</h1>
+                <nav>
+                    <ul>
+                        <li><a href="Exam.php">Home</a></li>
+                        <li><a href="">Impressum</a></li>
+                        <li><a href="">Datenschutz</a></li>
+                    </ul>
+                </nav>  
+            </header>
         HTML;
 
         // to do: handle all parameters
@@ -116,6 +126,10 @@ abstract class Page
     protected function generatePageFooter():void
     {
         echo <<< HTML
+            <footer>
+                <p>Author: Bogdan Polskiy</p>
+                <p><a href="mailto:hege@example.com">hege@example.com</a></p>
+            </footer>
             </body>
             </html>
         HTML;
