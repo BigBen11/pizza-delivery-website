@@ -51,7 +51,7 @@ class Kunde extends Page
         echo <<<HTML
         <h1><b>Kunde (Lieferstatus)</b></h1>
         <hr>
-        <div id="order-status"></div>
+        <div class="order-status" id="order-status"></div>
         <a href="./bestellung.php" class="neue-bestellung">Neue Bestellung</a>
         <script src="StatusUpdate.js"></script>
 HTML;

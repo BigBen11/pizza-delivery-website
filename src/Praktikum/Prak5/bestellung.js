@@ -1,30 +1,13 @@
 /*global
-    addPizza, appendChild, createElement, getAttribute, getElementById,
-    querySelector, setAttribute, textContent, toFixed, value, window, document, Array, parseFloat
+    window, document
 */
 
 const warenkorb = document.getElementById("warenkorb");
 const addressInput = document.querySelector("input[name='Adresse']");
-const orderButton = document.getElementById("bestellung-button-submit");
+const orderButton = document.getElementById("submit");
 const priceOutput = document.getElementById("preisAusgabe");
 const resetAllButton = document.querySelector("input[name='Alle_löschen']");
 const resetSelectedButton = document.querySelector("input[name='Auswahl_löschen']");
-
-// Add pizza to cart
-window.addPizza = function(pizza) {
-    "use strict";
-    var name = pizza.getAttribute("data-name");
-    var price = parseFloat(pizza.getAttribute("data-price"));
-    var id = parseFloat(pizza.getAttribute("data-id"));
-    var option = document.createElement("option");
-
-    option.value = id;
-    option.textContent = name + " - " + price.toFixed(2) + "€";
-    option.setAttribute("data-price", price);
-    warenkorb.appendChild(option);
-    updateTotalPrice();
-    validateOrderButton();
-};
 
 // Update total price
 function updateTotalPrice() {
@@ -42,17 +25,33 @@ function updateTotalPrice() {
 // Validate order button
 function validateOrderButton() {
     "use strict";
-    const isAddressFilled = addressInput.value.trim() !== '';
-    const isCartNotEmpty = warenkorb.options.length > 0;
+    var isAddressFilled = addressInput.value.trim() !== "";
+    var isCartNotEmpty = warenkorb.options.length > 0;
     orderButton.disabled = !(isAddressFilled && isCartNotEmpty);
 }
+
+// Add pizza to cart
+window.addPizza = function(pizza) {
+    "use strict";
+    var name = pizza.getAttribute("data-name");
+    var price = parseFloat(pizza.getAttribute("data-price"));
+    var id = parseFloat(pizza.getAttribute("data-id"));
+    var option = document.createElement("option");
+
+    option.value = id;
+    option.textContent = name + " - " + price.toFixed(2) + "€";
+    option.setAttribute("data-price", price);
+    warenkorb.appendChild(option);
+    updateTotalPrice();
+    validateOrderButton();
+};
 
 // Event listeners for input fields
 addressInput.addEventListener("input", validateOrderButton);
 warenkorb.addEventListener("change", validateOrderButton);
 
 // Delete all items from the cart
-resetAllButton.addEventListener("click", function() {
+resetAllButton.addEventListener("click", function resetAll() {
     "use strict";
     while (warenkorb.options.length > 0) {
         warenkorb.remove(0);
@@ -62,7 +61,7 @@ resetAllButton.addEventListener("click", function() {
 });
 
 // Delete selected items from the cart
-resetSelectedButton.addEventListener("click", function() {
+resetSelectedButton.addEventListener("click", function resetSelected() {
     "use strict";
     var selectedOptions = Array.from(warenkorb.selectedOptions);
     selectedOptions.forEach(function(option) {
@@ -73,7 +72,7 @@ resetSelectedButton.addEventListener("click", function() {
 });
 
 // Automatically select all pizzas before submitting
-document.getElementById("myForm").addEventListener("submit", function() {
+document.getElementById("myForm").addEventListener("submit", function selectAllPizzas() {
     "use strict";
     var i;
     for (i = 0; i < warenkorb.options.length; i += 1) {

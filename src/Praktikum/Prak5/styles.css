@@ -96,7 +96,7 @@ footer {
     margin-top: 0.5rem;
 }
 
-#warenkorb-fieldset {
+.warenkorb-fieldset {
     min-width: 18.75rem;
     min-height: 6.25rem;
 }
@@ -120,7 +120,7 @@ footer {
     background-color: #5c0000; /* Darker red on hover */
 }
 
-#bestellung-button-submit {
+.bestellung-button-submit {
     background-color: #4CAF50; /* Green background color */
     border: none; /* No border */
     color: white; /* White text */
@@ -135,12 +135,12 @@ footer {
     transition: background-color 0.3s; /* Transition effect */
 }
 
-#bestellung-button-submit:hover {
+.bestellung-button-submit:hover {
     background-color: #28542a; /* Darker green on hover */
 }
 
 /****KUNDE****/
-#order-status{
+.order-status{
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -178,7 +178,7 @@ footer {
 }
 
 /****BAECKER****/
-#baecker-form {
+.baecker-form {
     display: flex;
     flex-direction: column;
     gap: 1.5625rem;

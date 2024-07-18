@@ -105,17 +105,17 @@ HTML;
                 <h2> <b>Warenkorb</b> </h2>
 
                 <form id="myForm" accept-charset="UTF-8" action="bestellung.php" method="post">
-                    <fieldset id="warenkorb-fieldset">
+                    <fieldset class="warenkorb-fieldset" id="warenkorb-fieldset">
                         <select tabindex="4" name="warenkorb[]" id="warenkorb" size="5" style="min-width: 200px;" multiple></select>
                         <h2>Preis</h2>
                         <p id="preisAusgabe">0.00€</p>
                     </fieldset>
 
-                    <input type="text" name="Adresse" placeholder="Ihre Adresse" required>
+                    <input type="text" id="address_field" name="Adresse" placeholder="Ihre Adresse" required>
 
-                    <input type="reset" name="Alle_löschen" value="Alle löschen">
-                    <input type="reset" name="Auswahl_löschen" value="Auswahl löschen">
-                    <input type="submit" id="submit" name="Bestellen" value="Bestellen" disabled>
+                    <input type="reset" class="bestellung-buttons" name="Alle_löschen" value="Alle löschen">
+                    <input type="reset" class="bestellung-buttons" name="Auswahl_löschen" value="Auswahl löschen">
+                    <input type="submit" class="bestellung-button-submit" id="submit" name="Bestellen" value="Bestellen" disabled>
                 </form>
 
             </div>
