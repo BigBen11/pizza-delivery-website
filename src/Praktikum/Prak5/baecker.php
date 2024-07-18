@@ -57,7 +57,7 @@ class Baecker extends Page
         echo <<<HTML
         <h1><b>Pizzabäcker (bestellte Pizzen)</b></h1>
         <hr>
-        <form id='baecker-form' method="post" action="baecker.php">
+        <form class="baecker-form" id='baecker-form' method="post" action="baecker.php">
 HTML;
 
         if (empty($data)) {
