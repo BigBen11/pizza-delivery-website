@@ -34,9 +34,8 @@ function processData() {
 
 function process(data) {
     "use strict";
-    var orders;
-    var container;
-    var ul;
+    let orders;
+    const container = document.getElementById("order-status");
 
     try {
         orders = (typeof data === "string") ? JSON.parse(data) : data;
@@ -45,18 +44,22 @@ function process(data) {
         return;
     }
 
-    container = document.getElementById("order-status");
-    container.innerHTML = "";
+    // Clear previous orders
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
 
     if (!orders.length) {
-        container.innerHTML = "<p>Du hast derzeit keine Bestellungen, mache jetzt eine! 😊</p>";
+        const p = document.createElement("p");
+        p.textContent = "Du hast derzeit keine Bestellungen, mache jetzt eine! 😊";
+        container.appendChild(p);
         return;
     }
 
-    ul = document.createElement("ul");
+    const ul = document.createElement("ul");
     orders.forEach(function(order) {
-        var li = document.createElement("li");
-        var statusText = getStatusText(order.status);
+        const li = document.createElement("li");
+        const statusText = getStatusText(order.status);
         li.textContent = order.name + ": " + statusText;
         li.classList.add("kunde-pizza-item");
         ul.appendChild(li);
