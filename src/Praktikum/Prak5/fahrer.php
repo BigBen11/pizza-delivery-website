@@ -32,12 +32,17 @@ class Fahrer extends Page
 
     protected function getViewData(): array
     {
-        $query = "SELECT `ordered_article`.`ordering_id`, `ordered_article`.`status`, `ordering`.`address` AS address, GROUP_CONCAT(`article`.`name` SEPARATOR ', ') AS pizza_types, SUM(`article`.`price`) AS total_price
-                  FROM `ordered_article` 
-                  JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id` 
+        $query = "SELECT `ordered_article`.`ordering_id`, `ordered_article`.`status`, `ordering`.`address` AS address, 
+                     GROUP_CONCAT(`article`.`name` SEPARATOR ', ') AS pizza_types, SUM(`article`.`price`) AS total_price
+                  FROM `ordered_article`
+                  JOIN `article` ON `ordered_article`.`article_id` = `article`.`article_id`
                   JOIN `ordering` ON `ordered_article`.`ordering_id` = `ordering`.`ordering_id`
-                  WHERE `ordered_article`.`status` = 3 OR `ordered_article`.`status` = 4
-                  GROUP BY `ordered_article`.`ordering_id`, `ordering`.`address`, `ordered_article`.`status`";
+                  WHERE `ordered_article`.`ordering_id` NOT IN (
+                  SELECT `ordered_article`.`ordering_id`
+                  FROM `ordered_article`
+                  WHERE `ordered_article`.`status` != 3 AND `ordered_article`.`status` != 4
+              )
+              GROUP BY `ordered_article`.`ordering_id`, `ordering`.`address`, `ordered_article`.`status`";
         $result = $this->db->query($query);
         $orders = [];
 
