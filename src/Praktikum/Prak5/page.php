@@ -41,6 +41,11 @@ abstract class Page
             $js_tag = "";
         }
 
+        $refresh = $autoreload ? '<meta http-equiv="refresh" content="10">' : '';
+
+        /*<li><a href="fahrer.php">Fahrer</a></li>
+        <li><a href="baecker.php">Bäcker</a></li>*/
+
         echo <<<EOT
         <!DOCTYPE html>
         <html lang="de">
@@ -56,13 +61,11 @@ abstract class Page
                 <h1>Willkommen beim Pizzaservice!</h1>
                 <nav>
                     <ul>
-                        <li><a href="fahrer.php">Fahrer</a></li>
-                        <li><a href="baecker.php">Bäcker</a></li>
                         <li><a href="bestellung.php">Bestellungen</a></li>
                         <li><a href="kunde.php">Kunde</a></li>
                     </ul>
                 </nav>
-            
+                $refresh  
             </header>
         EOT;
     }
