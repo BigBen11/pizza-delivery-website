@@ -1,3 +1,17 @@
+# Pizza Delivery Project
+
+The Pizza Delivery Project can be found in the `./src/Praktikum` directory, with different versions of the website available under `Prak1`, `Prak2`, and so on.
+
+This project was developed using a range of web technologies, including:
+
+- **HTML**
+- **CSS** for styling
+- **PHP** for database interactions
+- **JSON** for data exchange
+- **JavaScript** for client-side scripting
+- **AJAX** for asynchronous communication
+- **Session management** to enhance user experience
+
 # EWA Docker Setup
 You know about [Docker](https://www.docker.com) and Docker is running on your system? You do not want to mess up your system by installing a web server and all the fancy software you need for EWA?
 
